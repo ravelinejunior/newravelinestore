@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:newravelinestore/data/model/cart_item_model.dart';
 import 'package:newravelinestore/data/model/order_model.dart';
 import 'package:newravelinestore/data/services/utils_services.dart';
+import 'package:newravelinestore/src/screens/ordersScreen/components/order_status.dart';
 
 class OrdersTile extends StatelessWidget {
   const OrdersTile({Key? key, required this.order}) : super(key: key);
@@ -58,10 +59,15 @@ class OrdersTile extends StatelessWidget {
                           .toList(),
                     ),
                   ),
+                  const VerticalDivider(
+                      color: Colors.grey, thickness: 2, width: 8),
                   Expanded(
                     flex: 2,
-                    child: Container(
-                      color: Colors.teal,
+                    child: OrderStatus(
+                      status: order.status,
+                      isOverdue: order.dateOverdue.isBefore(
+                        DateTime.now(),
+                      ),
                     ),
                   ),
                 ],
