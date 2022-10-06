@@ -114,7 +114,7 @@ final List<OrderModel> ordersModel = [
     dateCreated: DateTime.parse('2022-09-16 22:11:02'),
     dateOverdue: DateTime.parse('2022-09-17 23:11:02'),
     items: cartItems,
-    status: 'pending_order',
+    status: 'refund_payment',
     copyAndPaste: "NSKJND6518615",
     total: 120.30,
   )
