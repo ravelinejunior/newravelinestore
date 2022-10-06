@@ -102,19 +102,19 @@ final genUser = UserModel(
 final List<OrderModel> ordersModel = [
   OrderModel(
     id: 168152,
-    dateCreated: DateTime.parse('2022-09-29 22:11:02'),
-    dateOverdue: DateTime.parse('2022-09-30 23:11:02'),
+    dateCreated: DateTime.parse('2022-11-29 22:11:02'),
+    dateOverdue: DateTime.parse('2022-11-30 23:11:02'),
     items: cartItems,
-    status: 'pending_order',
+    status: 'pending_payment',
     copyAndPaste: "6186161GVJHNJSN1615#",
     total: 120.30,
   ),
   OrderModel(
     id: 16515,
-    dateCreated: DateTime.parse('2022-09-16 22:11:02'),
-    dateOverdue: DateTime.parse('2022-09-17 23:11:02'),
+    dateCreated: DateTime.parse('2022-11-16 22:11:02'),
+    dateOverdue: DateTime.parse('2022-11-17 23:11:02'),
     items: cartItems,
-    status: 'refund_payment',
+    status: 'delivered',
     copyAndPaste: "NSKJND6518615",
     total: 120.30,
   )

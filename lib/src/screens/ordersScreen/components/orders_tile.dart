@@ -19,6 +19,7 @@ class OrdersTile extends StatelessWidget {
       child: Theme(
         data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
         child: ExpansionTile(
+          initiallyExpanded: order.status == 'pending_payment',
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -38,25 +39,27 @@ class OrdersTile extends StatelessWidget {
           ),
           childrenPadding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
           children: [
-            SizedBox(
-              height: MediaQuery.of(context).size.height / 5,
+            IntrinsicHeight(
               child: Row(
                 children: [
                   Expanded(
                     flex: 3,
-                    child: ListView(
-                      physics: const BouncingScrollPhysics(),
-                      addAutomaticKeepAlives: true,
-                      addRepaintBoundaries: true,
-                      shrinkWrap: true,
-                      children: order.items
-                          .map(
-                            (orderItem) => _OrderItemMapped(
-                              utilsService: utilsService,
-                              orderItem: orderItem,
-                            ),
-                          )
-                          .toList(),
+                    child: SizedBox(
+                      height: MediaQuery.of(context).size.height / 4,
+                      child: ListView(
+                        physics: const BouncingScrollPhysics(),
+                        addAutomaticKeepAlives: true,
+                        addRepaintBoundaries: true,
+                        shrinkWrap: true,
+                        children: order.items
+                            .map(
+                              (orderItem) => _OrderItemMapped(
+                                utilsService: utilsService,
+                                orderItem: orderItem,
+                              ),
+                            )
+                            .toList(),
+                      ),
                     ),
                   ),
                   const VerticalDivider(

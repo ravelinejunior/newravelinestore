@@ -25,8 +25,8 @@ class OrderStatus extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _StatusDot(
-          isActive: isOverdue,
+        const _StatusDot(
+          isActive: true,
           title: 'Confirmed Order',
         ),
         const _CustomDivider(),
@@ -38,9 +38,31 @@ class OrderStatus extends StatelessWidget {
           )
         ] else if (isOverdue) ...[
           const _StatusDot(
-              isActive: false,
-              title: 'Overdue Payment',
-              backgroundColor: Colors.red),
+            isActive: true,
+            title: 'Overdue Payment',
+            backgroundColor: Colors.red,
+          ),
+        ] else ...[
+          _StatusDot(
+            isActive: currentStatus >= 2,
+            title: 'Payment',
+          ),
+          const _CustomDivider(),
+          _StatusDot(
+            isActive: currentStatus >= 3,
+            title: 'Preparing',
+          ),
+          const _CustomDivider(),
+          _StatusDot(
+            isActive: currentStatus >= 4,
+            title: 'Sending',
+          ),
+          const _CustomDivider(),
+          _StatusDot(
+            isActive: currentStatus == 5,
+            title: 'Delivered',
+          ),
+          const _CustomDivider(),
         ]
       ],
     );
