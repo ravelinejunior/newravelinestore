@@ -38,6 +38,7 @@ class OrdersTile extends StatelessWidget {
             ],
           ),
           childrenPadding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+          expandedCrossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             IntrinsicHeight(
               child: Row(
@@ -75,7 +76,48 @@ class OrdersTile extends StatelessWidget {
                   ),
                 ],
               ),
-            )
+            ),
+            //Total
+            Text.rich(
+              TextSpan(
+                style: GoogleFonts.montserrat(fontSize: 20),
+                children: [
+                  const TextSpan(
+                    text: 'Total: ',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  TextSpan(
+                    text: utilsService.priceToCurrencyString(order.total),
+                    style: const TextStyle(color: Colors.black87),
+                  ),
+                ],
+              ),
+            ),
+            //Botão de pagamento
+            Visibility(
+              visible: order.status == 'pending_payment',
+              child: ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.teal[300],
+                  shadowColor: Colors.greenAccent,
+                  minimumSize: const Size(35, 35),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                ),
+                onPressed: () {},
+                icon: Image.asset('assets/images/icons/pix.png', height: 20),
+                label: Text(
+                  'See Pix QR Code',
+                  style: GoogleFonts.montserrat(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              replacement: Container(),
+            ),
           ],
         ),
       ),
