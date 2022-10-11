@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
 import 'package:newravelinestore/src/screens/cartScreen/cart_screen.dart';
 import 'package:newravelinestore/src/screens/homeScreen/home_tab.dart';
 import 'package:newravelinestore/src/screens/ordersScreen/orders_screen.dart';

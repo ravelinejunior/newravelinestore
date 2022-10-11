@@ -3,7 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:newravelinestore/data/model/cart_item_model.dart';
 import 'package:newravelinestore/data/services/utils_services.dart';
 import 'package:newravelinestore/src/components/payment_dialog.dart';
-import 'package:newravelinestore/src/components/snackbar_ext.dart';
 import 'package:newravelinestore/src/screens/cartScreen/components/item_cart_tile.dart';
 import 'package:newravelinestore/src/utils/constants.dart';
 import 'package:newravelinestore/src/utils/app_data.dart' as app_data;

@@ -8,9 +8,15 @@ import 'package:newravelinestore/data/services/utils_services.dart';
 import 'package:newravelinestore/src/utils/routes.dart';
 
 class HomeItemTile extends StatelessWidget {
-  const HomeItemTile({Key? key, required this.itemModel}) : super(key: key);
+  HomeItemTile({
+    Key? key,
+    required this.itemModel,
+    required this.cartAnimationMethod,
+  }) : super(key: key);
 
   final ItemModel itemModel;
+  final void Function(GlobalKey) cartAnimationMethod;
+  final GlobalKey imageGlobalKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +42,10 @@ class HomeItemTile extends StatelessWidget {
                   // image
                   Expanded(
                     child: Hero(
-                      child: Image.asset(itemModel.imgUrl),
+                      child: Image.asset(
+                        itemModel.imgUrl,
+                        key: imageGlobalKey,
+                      ),
                       tag: Random(100000000),
                     ),
                   ),
@@ -77,21 +86,26 @@ class HomeItemTile extends StatelessWidget {
           ),
         ),
         Positioned(
-          child: Container(
-            height: 48,
-            width: 40,
-            clipBehavior: Clip.antiAlias,
-            decoration: const BoxDecoration(
-              color: Colors.teal,
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(16),
-                topRight: Radius.circular(16),
+          child: GestureDetector(
+            onTap: () {
+              cartAnimationMethod(imageGlobalKey);
+            },
+            child: Container(
+              height: 48,
+              width: 40,
+              clipBehavior: Clip.antiAlias,
+              decoration: const BoxDecoration(
+                color: Colors.teal,
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(16),
+                  topRight: Radius.circular(16),
+                ),
               ),
-            ),
-            child: const Icon(
-              Icons.add_shopping_cart_rounded,
-              color: Colors.white,
-              size: 20,
+              child: const Icon(
+                Icons.add_shopping_cart_rounded,
+                color: Colors.white,
+                size: 20,
+              ),
             ),
           ),
           top: 4,
