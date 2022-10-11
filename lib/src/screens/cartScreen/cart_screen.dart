@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:newravelinestore/data/model/cart_item_model.dart';
 import 'package:newravelinestore/data/services/utils_services.dart';
+import 'package:newravelinestore/src/components/payment_dialog.dart';
 import 'package:newravelinestore/src/components/snackbar_ext.dart';
 import 'package:newravelinestore/src/screens/cartScreen/components/item_cart_tile.dart';
 import 'package:newravelinestore/src/utils/constants.dart';
@@ -107,10 +108,14 @@ class _CartTabState extends State<CartTab> {
                     ),
                     onPressed: () async {
                       bool? result = await showOrderConfirmation();
-                      if (result != null) {
-                        setGeneralMessage(result ? "Confirmed" : "Canceled");
-                      } else {
-                        setGeneralMessage("Nothing selected");
+
+                      if (result ?? false) {
+                        showDialog(
+                          context: context,
+                          builder: (_) => PaymentDialog(
+                            order: app_data.ordersModel.first,
+                          ),
+                        );
                       }
                     },
                     icon: const Icon(
