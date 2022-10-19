@@ -7,8 +7,8 @@ import 'package:newravelinestore/data/model/item_model.dart';
 import 'package:newravelinestore/data/services/utils_services.dart';
 import 'package:newravelinestore/src/utils/routes.dart';
 
-class HomeItemTile extends StatelessWidget {
-  HomeItemTile({
+class HomeItemTile extends StatefulWidget {
+  const HomeItemTile({
     Key? key,
     required this.itemModel,
     required this.cartAnimationMethod,
@@ -16,7 +16,21 @@ class HomeItemTile extends StatelessWidget {
 
   final ItemModel itemModel;
   final void Function(GlobalKey) cartAnimationMethod;
+
+  @override
+  State<HomeItemTile> createState() => _HomeItemTileState();
+}
+
+class _HomeItemTileState extends State<HomeItemTile> {
   final GlobalKey imageGlobalKey = GlobalKey();
+
+  IconData iconTile = Icons.add_shopping_cart_rounded;
+
+  Future<void> switchIcons() async {
+    setState(() => iconTile = Icons.check);
+    await Future.delayed(const Duration(milliseconds: 2000));
+    setState(() => iconTile = Icons.add_shopping_cart_rounded);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +39,8 @@ class HomeItemTile extends StatelessWidget {
       children: [
         InkWell(
           splashColor: Colors.teal.shade100,
-          onTap: () =>
-              Get.toNamed(ConstantsRoutes.detailRoute, arguments: itemModel),
+          onTap: () => Get.toNamed(ConstantsRoutes.detailRoute,
+              arguments: widget.itemModel),
           child: Card(
             elevation: 8,
             clipBehavior: Clip.antiAlias,
@@ -43,7 +57,7 @@ class HomeItemTile extends StatelessWidget {
                   Expanded(
                     child: Hero(
                       child: Image.asset(
-                        itemModel.imgUrl,
+                        widget.itemModel.imgUrl,
                         key: imageGlobalKey,
                       ),
                       tag: Random(100000000),
@@ -51,7 +65,7 @@ class HomeItemTile extends StatelessWidget {
                   ),
                   // name
                   Text(
-                    itemModel.itemName,
+                    widget.itemModel.itemName,
                     style: GoogleFonts.montserrat(
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
@@ -63,7 +77,8 @@ class HomeItemTile extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        utilsService.priceToCurrencyString(itemModel.price),
+                        utilsService
+                            .priceToCurrencyString(widget.itemModel.price),
                         style: GoogleFonts.montserrat(
                           fontWeight: FontWeight.bold,
                           color: Colors.teal,
@@ -71,7 +86,7 @@ class HomeItemTile extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        "/${itemModel.unit}",
+                        "/${widget.itemModel.unit}",
                         style: GoogleFonts.montserrat(
                           fontWeight: FontWeight.bold,
                           color: Colors.teal,
@@ -86,25 +101,30 @@ class HomeItemTile extends StatelessWidget {
           ),
         ),
         Positioned(
-          child: GestureDetector(
-            onTap: () {
-              cartAnimationMethod(imageGlobalKey);
-            },
-            child: Container(
-              height: 48,
-              width: 40,
-              clipBehavior: Clip.antiAlias,
-              decoration: const BoxDecoration(
-                color: Colors.teal,
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(16),
-                  topRight: Radius.circular(16),
+          child: ClipRRect(
+            borderRadius: const BorderRadius.only(
+              bottomLeft: Radius.circular(16),
+              topRight: Radius.circular(16),
+            ),
+            child: Material(
+              child: InkWell(
+                splashColor: Colors.teal.shade100,
+                onTap: () {
+                  widget.cartAnimationMethod(imageGlobalKey);
+                  switchIcons();
+                },
+                child: Ink(
+                  height: 48,
+                  width: 40,
+                  decoration: const BoxDecoration(
+                    color: Colors.teal,
+                  ),
+                  child: Icon(
+                    iconTile,
+                    color: Colors.white,
+                    size: 20,
+                  ),
                 ),
-              ),
-              child: const Icon(
-                Icons.add_shopping_cart_rounded,
-                color: Colors.white,
-                size: 20,
               ),
             ),
           ),
