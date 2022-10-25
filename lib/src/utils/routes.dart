@@ -6,6 +6,7 @@ import 'package:newravelinestore/src/screens/detailScreen/detail_screen.dart';
 import 'package:newravelinestore/src/screens/loginScreen/login_screen.dart';
 import 'package:newravelinestore/src/screens/profileScreen/profile_screen.dart';
 import 'package:newravelinestore/src/screens/signupScreen/signup_screen.dart';
+import 'package:newravelinestore/src/screens/splashScreen/splash_screen.dart';
 
 class Routes {
   List<GetPage<dynamic>>? getPageList = [
@@ -44,14 +45,14 @@ class Routes {
       transitionDuration: const Duration(seconds: 1),
       curve: Curves.linear,
     ),
-    /*
     GetPage(
-      name: ConstantsRoutes.registerRoute,
-      page: () => const RegisterScreen(),
+      name: ConstantsRoutes.splashRoute,
+      page: () => const SplashScreen(),
       transition: Transition.rightToLeftWithFade,
       transitionDuration: const Duration(seconds: 1),
       curve: Curves.linear,
     ),
+    /*
     GetPage(
       name: ConstantsRoutes.carDetailRoute,
       page: () => const CarDetailScreen(),
@@ -78,7 +79,7 @@ class Routes {
 }
 
 class ConstantsRoutes {
-  static const String splashRoute = "/";
+  static const String splashRoute = "/splash";
   static const String detailRoute = "/detail";
   static const String loginRoute = "/login";
   static const String registerRoute = "/register";
