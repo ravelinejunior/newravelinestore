@@ -3,6 +3,7 @@ import 'package:add_to_cart_animation/add_to_cart_icon.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:newravelinestore/src/components/custom_shimmer.dart';
 import 'package:newravelinestore/src/screens/homeScreen/components/home_item_tile.dart';
 import 'package:newravelinestore/src/utils/app_data.dart' as app_data;
 import 'package:newravelinestore/src/utils/constants.dart';
@@ -21,8 +22,21 @@ class _HomeTabState extends State<HomeTab> {
   GlobalKey<CartIconKey> gkCart = GlobalKey<CartIconKey>();
   late Function(GlobalKey) runAddToCardAnimation;
 
+  bool isNotLoading = false;
+
   void itemSelectedCartAnimation(GlobalKey gkImage) {
     runAddToCardAnimation(gkImage);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    Future.delayed(const Duration(seconds: 3)).then((_) {
+      setState(() {
+        isNotLoading = !isNotLoading;
+      });
+    });
   }
 
   @override
@@ -124,42 +138,80 @@ class _HomeTabState extends State<HomeTab> {
               margin: const EdgeInsets.all(2),
               padding: const EdgeInsets.only(left: 16),
               height: MediaQuery.of(context).size.height / 10,
-              child: ListView.separated(
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (_, index) => CategoryTile(
-                  category: app_data.categories[index],
-                  isSelected: app_data.categories[index].toLowerCase() ==
-                      selectectedCategory.toLowerCase(),
-                  onPressed: () {
-                    setState(() {
-                      selectectedCategory = app_data.categories[index];
-                    });
-                  },
-                ),
-                separatorBuilder: (_, index) => const SizedBox(width: 8),
-                itemCount: app_data.categories.length,
-              ),
+              child: isNotLoading
+                  ? ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (_, index) => CategoryTile(
+                        category: app_data.categories[index],
+                        isSelected: app_data.categories[index].toLowerCase() ==
+                            selectectedCategory.toLowerCase(),
+                        onPressed: () {
+                          setState(() {
+                            selectectedCategory = app_data.categories[index];
+                          });
+                        },
+                      ),
+                      separatorBuilder: (_, index) => const SizedBox(width: 8),
+                      itemCount: app_data.categories.length,
+                    )
+                  : ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: List.generate(
+                        10,
+                        (_) => Container(
+                          margin: const EdgeInsets.symmetric(
+                            horizontal: 4,
+                            vertical: 16,
+                          ),
+                          alignment: Alignment.center,
+                          child: CustomShimmer(
+                            height: double.infinity,
+                            width: MediaQuery.of(context).size.width / 6,
+                            isRounded: true,
+                            borderRadius: BorderRadius.circular(24),
+                          ),
+                        ),
+                      )),
             ),
 
             //GridView
             Expanded(
-                child: GridView.builder(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-              physics: const BouncingScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisSpacing: 10,
-                crossAxisSpacing: 10,
-                childAspectRatio: 9 / 11.5,
-              ),
-              itemCount: app_data.items.length,
-              itemBuilder: (_, index) {
-                return HomeItemTile(
-                  itemModel: app_data.items[index],
-                  cartAnimationMethod: itemSelectedCartAnimation,
-                );
-              },
-            )),
+              child: isNotLoading
+                  ? GridView.builder(
+                      padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                      physics: const BouncingScrollPhysics(),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        mainAxisSpacing: 10,
+                        crossAxisSpacing: 10,
+                        childAspectRatio: 9 / 11.5,
+                      ),
+                      itemCount: app_data.items.length,
+                      itemBuilder: (_, index) {
+                        return HomeItemTile(
+                          itemModel: app_data.items[index],
+                          cartAnimationMethod: itemSelectedCartAnimation,
+                        );
+                      },
+                    )
+                  : GridView.count(
+                      padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                      physics: const BouncingScrollPhysics(),
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 10,
+                      crossAxisSpacing: 10,
+                      childAspectRatio: 9 / 11.5,
+                      children: List.generate(
+                        10,
+                        (_) => CustomShimmer(
+                          height: double.infinity,
+                          width: double.infinity,
+                          borderRadius: BorderRadius.circular(24),
+                        ),
+                      ),
+                    ),
+            ),
           ],
         ),
       ),
