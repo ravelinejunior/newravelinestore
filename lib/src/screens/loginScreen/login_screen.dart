@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
+import 'package:newravelinestore/domain/manager/test_manager.dart';
 import 'package:newravelinestore/src/components/custom_text_field.dart';
 import 'package:newravelinestore/src/utils/constants.dart';
 import 'package:newravelinestore/src/utils/routes.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  LoginScreen({Key? key}) : super(key: key);
+  final testController = TestControllerManager();
 
   @override
   Widget build(BuildContext context) {
@@ -71,25 +73,40 @@ class LoginScreen extends StatelessWidget {
                       isSelected: true,
                     ),
                     ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.teal,
-                        shadowColor: Colors.greenAccent,
-                        minimumSize: const Size(50, 50),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.teal,
+                          shadowColor: Colors.greenAccent,
+                          minimumSize: const Size(50, 50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
                         ),
-                      ),
-                      onPressed: () {
-                        Get.offAndToNamed(ConstantsRoutes.baseRoute);
-                      },
-                      child: Text(
-                        "Login",
-                        style: GoogleFonts.montserrat(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14,
-                        ),
-                      ),
-                    ),
+                        onPressed: () {
+                          testController.setLoading().then(
+                                (value) => Get.offAndToNamed(
+                                    ConstantsRoutes.baseRoute),
+                              );
+                        },
+                        child: GetBuilder<TestControllerManager>(
+                          init: testController,
+                          builder: (controller) {
+                            return controller.isLoading
+                                ? const Padding(
+                                    padding: EdgeInsets.all(16),
+                                    child: CircularProgressIndicator.adaptive(
+                                      valueColor:
+                                          AlwaysStoppedAnimation(Colors.white),
+                                    ),
+                                  )
+                                : Text(
+                                    "Login",
+                                    style: GoogleFonts.montserrat(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                    ),
+                                  );
+                          },
+                        )),
                     Align(
                       alignment: Alignment.centerRight,
                       child: TextButton(

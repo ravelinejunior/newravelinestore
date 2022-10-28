@@ -12,7 +12,7 @@ class Routes {
   List<GetPage<dynamic>>? getPageList = [
     GetPage(
       name: ConstantsRoutes.loginRoute,
-      page: () => const LoginScreen(),
+      page: () => LoginScreen(),
       transition: Transition.upToDown,
       transitionDuration: const Duration(seconds: 1),
       curve: Curves.linear,
