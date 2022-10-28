@@ -14,6 +14,10 @@ class UserModel {
     required this.password,
   });
 
+  static UserModel userModelInstance() {
+    return UserModel(name: "", cpf: "", email: "", phone: "", password: "");
+  }
+
   UserModel copyWith({
     String? name,
     String? cpf,

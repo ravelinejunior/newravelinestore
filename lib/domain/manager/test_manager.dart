@@ -1,14 +1,14 @@
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:get/get.dart';
 
 class TestControllerManager extends GetxController {
-  bool isLoading = false;
+  RxBool isLoading = false.obs;
 
   Future<void> setLoading() async {
-    isLoading = !isLoading;
+    isLoading.value = !isLoading.value;
     update();
 
     await Future.delayed(const Duration(seconds: 2)).then((value) {
-      isLoading = !isLoading;
+      isLoading.value = !isLoading.value;
       update();
     });
   }

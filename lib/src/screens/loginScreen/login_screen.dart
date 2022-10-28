@@ -3,14 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
+import 'package:newravelinestore/domain/controller/user_controller.dart';
 import 'package:newravelinestore/domain/manager/test_manager.dart';
 import 'package:newravelinestore/src/components/custom_text_field.dart';
+import 'package:newravelinestore/src/components/snackbar_ext.dart';
 import 'package:newravelinestore/src/utils/constants.dart';
 import 'package:newravelinestore/src/utils/routes.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({Key? key}) : super(key: key);
   final testController = TestControllerManager();
+  final userController = UserController();
+  final _emailTextController = TextEditingController();
+  final _passTextController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -66,11 +71,22 @@ class LoginScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    const CustomTextField(icon: Icons.email, label: 'Email'),
-                    const CustomTextField(
+                    CustomTextField(
+                      icon: Icons.email,
+                      label: 'Email',
+                      controller: _emailTextController,
+                      onChanged: (value) {
+                        userController.setUserEmail(value);
+                      },
+                    ),
+                    CustomTextField(
                       icon: Icons.lock,
                       label: 'Password',
                       isSelected: true,
+                      controller: _passTextController,
+                      onChanged: (value) {
+                        userController.setUserPassword(value);
+                      },
                     ),
                     ElevatedButton(
                         style: ElevatedButton.styleFrom(
@@ -82,15 +98,23 @@ class LoginScreen extends StatelessWidget {
                           ),
                         ),
                         onPressed: () {
-                          testController.setLoading().then(
-                                (value) => Get.offAndToNamed(
-                                    ConstantsRoutes.baseRoute),
-                              );
+                          if (userController.userModel.value.email
+                                  .contains("@") &&
+                              userController.userModel.value.password.length >
+                                  5) {
+                            testController.setLoading().then(
+                                  (value) => Get.offAndToNamed(
+                                      ConstantsRoutes.baseRoute),
+                                );
+                          } else {
+                            getErrorSnackbar("Authentication error",
+                                "Email or password missformated");
+                          }
                         },
-                        child: GetBuilder<TestControllerManager>(
+                        child: GetX<TestControllerManager>(
                           init: testController,
                           builder: (controller) {
-                            return controller.isLoading
+                            return controller.isLoading.value
                                 ? const Padding(
                                     padding: EdgeInsets.all(16),
                                     child: CircularProgressIndicator.adaptive(
