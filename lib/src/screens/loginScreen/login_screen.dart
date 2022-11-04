@@ -98,8 +98,7 @@ class LoginScreen extends StatelessWidget {
                           ),
                         ),
                         onPressed: () {
-                          if (userController.userModel.value.email
-                                  .contains("@") &&
+                          if (userController.userModel.value.email.isEmail &&
                               userController.userModel.value.password.length >
                                   5) {
                             testController.setLoading().then(
