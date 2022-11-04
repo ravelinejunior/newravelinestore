@@ -10,10 +10,11 @@ import 'package:newravelinestore/src/components/snackbar_ext.dart';
 import 'package:newravelinestore/src/utils/constants.dart';
 import 'package:newravelinestore/src/utils/routes.dart';
 
-class LoginScreen extends StatelessWidget {
+//Extending Getview, creates a controller so you dont need to instanciate it
+class LoginScreen extends GetView<TestControllerManager> {
   LoginScreen({Key? key}) : super(key: key);
-  final testController = TestControllerManager();
-  final userController = UserController();
+  //final testController = Get.find<TestControllerManager>();
+  final userController = Get.find<UserController>();
   final _emailTextController = TextEditingController();
   final _passTextController = TextEditingController();
 
@@ -101,7 +102,7 @@ class LoginScreen extends StatelessWidget {
                           if (userController.userModel.value.email.isEmail &&
                               userController.userModel.value.password.length >
                                   5) {
-                            testController.setLoading().then(
+                            controller.setLoading().then(
                                   (value) => Get.offAndToNamed(
                                       ConstantsRoutes.baseRoute),
                                 );
@@ -111,7 +112,6 @@ class LoginScreen extends StatelessWidget {
                           }
                         },
                         child: GetX<TestControllerManager>(
-                          init: testController,
                           builder: (controller) {
                             return controller.isLoading.value
                                 ? const Padding(
