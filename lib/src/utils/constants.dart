@@ -17,3 +17,8 @@ const String bottomNavProfileString = "Profile";
 const String hintTextSearchHomeString = "Search Here ...";
 const String addToCartString = "Add To Cart";
 const String finishOrderString = "Finish Order";
+
+//Datas Endpoints
+const String baseUrlEndPoint = "https://parseapi.back4app.com/functions/";
+const String signInEndPoint = "$baseUrlEndPoint/login";
+const String signUpEndPoint = "$baseUrlEndPoint/signup";
