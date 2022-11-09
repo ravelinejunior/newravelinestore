@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
@@ -37,7 +38,7 @@ class HttpManager {
       );
 
       log('Return from backend result');
-      return response.data;
+      return json.decode(response.data);
     } on DioError catch (error) {
       log('Return from backend error result. ${error.error}');
       return error.response?.data ?? {};
