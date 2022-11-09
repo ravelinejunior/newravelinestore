@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:newravelinestore/domain/controller/auth_controller.dart';
 import 'package:newravelinestore/domain/controller/user_controller.dart';
 import 'package:newravelinestore/domain/manager/test_manager.dart';
 import 'package:newravelinestore/src/utils/routes.dart';
@@ -8,6 +9,7 @@ import 'package:newravelinestore/src/utils/routes.dart';
 void main() {
   Get.lazyPut<UserController>(() => UserController());
   Get.lazyPut<TestControllerManager>(() => TestControllerManager());
+  Get.lazyPut<AuthController>(() => AuthController());
   runApp(const MyApp());
 }
 

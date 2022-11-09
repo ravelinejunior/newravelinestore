@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
+import 'package:newravelinestore/domain/controller/auth_controller.dart';
 import 'package:newravelinestore/domain/controller/user_controller.dart';
-import 'package:newravelinestore/domain/manager/test_manager.dart';
 import 'package:newravelinestore/src/components/custom_text_field.dart';
 import 'package:newravelinestore/src/components/snackbar_ext.dart';
 import 'package:newravelinestore/src/utils/constants.dart';
 import 'package:newravelinestore/src/utils/routes.dart';
 
 //Extending Getview, creates a controller so you dont need to instanciate it
-class LoginScreen extends GetView<TestControllerManager> {
+class LoginScreen extends GetView<AuthController> {
   LoginScreen({Key? key}) : super(key: key);
   //final testController = Get.find<TestControllerManager>();
   final userController = Get.find<UserController>();
@@ -102,16 +102,30 @@ class LoginScreen extends GetView<TestControllerManager> {
                           if (userController.userModel.value.email.isEmail &&
                               userController.userModel.value.password.length >
                                   5) {
-                            controller.setLoading().then(
-                                  (value) => Get.offAndToNamed(
-                                      ConstantsRoutes.baseRoute),
-                                );
+                            final email = userController.userModel.value.email;
+                            final password =
+                                userController.userModel.value.password;
+                            controller
+                                .signIn(
+                              email: email,
+                              password: password,
+                            )
+                                .then(
+                              (_) {
+                                if (controller.isAuthenticated.value) {
+                                  Get.offAndToNamed(ConstantsRoutes.baseRoute);
+                                } else {
+                                  getErrorSnackbar("Authentication error",
+                                      "Login failed, Error 400");
+                                }
+                              },
+                            );
                           } else {
                             getErrorSnackbar("Authentication error",
                                 "Email or password missformated");
                           }
                         },
-                        child: GetX<TestControllerManager>(
+                        child: GetX<AuthController>(
                           builder: (controller) {
                             return controller.isLoading.value
                                 ? const Padding(

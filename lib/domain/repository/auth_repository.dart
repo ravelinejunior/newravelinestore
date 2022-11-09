@@ -6,7 +6,7 @@ import 'package:newravelinestore/src/utils/constants.dart';
 class AuthRepository {
   final HttpManager _httpManager = HttpManager();
 
-  Future signInAuth({
+  Future<bool> signInAuth({
     required String email,
     required String password,
   }) async {
@@ -16,9 +16,12 @@ class AuthRepository {
       body: {'email': email, 'password': password},
     );
     if (responseResult['result'] != null) {
-      log('Login succesded');
+      log('Login successfully authenticated');
+      log(responseResult['result']);
+      return true;
     } else {
       log('Login fail');
+      return false;
     }
   }
 }
