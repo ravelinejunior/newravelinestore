@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:newravelinestore/data/model/user_model.dart';
 import 'package:newravelinestore/data/services/http_manager.dart';
 import 'package:newravelinestore/src/utils/constants.dart';
 
@@ -18,6 +19,7 @@ class AuthRepository {
     if (responseResult['result'] != null) {
       log('Login successfully authenticated');
       log(responseResult['result']);
+      final user = UserModel.fromMap(responseResult['result']);
       return true;
     } else {
       log('Login fail');

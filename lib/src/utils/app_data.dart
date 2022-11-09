@@ -90,13 +90,7 @@ final List<CartItemModel> cartItems = [
 ];
 
 //Test User
-final genUser = UserModel(
-  name: "Raveline",
-  cpf: "11191151511",
-  email: "raveline@email.com",
-  phone: "3151515151",
-  password: "passw",
-);
+final genUser = UserModel.userModelInstance();
 
 //Testing Order Screen
 final List<OrderModel> ordersModel = [
