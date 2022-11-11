@@ -2,10 +2,11 @@ import 'dart:developer';
 
 import 'package:newravelinestore/data/model/user_model.dart';
 import 'package:newravelinestore/data/services/http_manager.dart';
+import 'package:newravelinestore/domain/repository/auth_errors.dart'
+    // ignore: library_prefixes
+    as authErrors;
 import 'package:newravelinestore/domain/result/auth_result.dart';
 import 'package:newravelinestore/src/utils/constants.dart';
-import 'package:newravelinestore/domain/repository/auth_errors.dart'
-    as authErrors;
 
 class AuthRepository {
   final HttpManager _httpManager = HttpManager();
@@ -21,7 +22,6 @@ class AuthRepository {
     );
     if (responseResult['result'] != null) {
       log('Login successfully authenticated');
-      log(responseResult['result']);
       final user = UserModel.fromMap(responseResult['result']);
       return AuthResult.success(user);
     } else {
@@ -29,6 +29,26 @@ class AuthRepository {
       return AuthResult.error(
         authErrors.authErrorsString(
           responseResult['error'],
+        ),
+      );
+    }
+  }
+
+  Future<AuthResult> validateToken(String token) async {
+    final response = await _httpManager.restRequest(
+        url: validateTokenEndPoint,
+        method: HttpAbstractMethod.get,
+        headers: {'X-Parse-Session-Token': token});
+
+    if (response['result'] != null) {
+      log('Login successfully authenticated');
+      final user = UserModel.fromMap(response['result']);
+      return AuthResult.success(user);
+    } else {
+      log('Login fail');
+      return AuthResult.error(
+        authErrors.authErrorsString(
+          response['error'],
         ),
       );
     }

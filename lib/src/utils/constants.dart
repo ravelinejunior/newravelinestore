@@ -22,3 +22,4 @@ const String finishOrderString = "Finish Order";
 const String baseUrlEndPoint = "https://parseapi.back4app.com/functions/";
 const String signInEndPoint = "$baseUrlEndPoint/login";
 const String signUpEndPoint = "$baseUrlEndPoint/signup";
+const String validateTokenEndPoint = "$baseUrlEndPoint/validate-token";

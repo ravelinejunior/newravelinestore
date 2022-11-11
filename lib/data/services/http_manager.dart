@@ -37,7 +37,8 @@ class HttpManager {
         data: body,
       );
 
-      log('Return from backend result');
+      log('Return from backend result ${response.data}');
+
       return json.decode(response.data);
     } on DioError catch (error) {
       log('Return from backend error result. ${error.error}');

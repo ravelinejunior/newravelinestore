@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:get/get.dart';
+import 'package:newravelinestore/data/model/user_model.dart';
 import 'package:newravelinestore/domain/repository/auth_repository.dart';
 import 'package:newravelinestore/domain/result/auth_result.dart';
 
@@ -9,6 +10,7 @@ class AuthController extends GetxController {
   RxBool isAuthenticated = false.obs;
 
   final _authRepository = AuthRepository();
+  late UserModel? mUser;
 
   Future<void> signIn({
     required String email,
@@ -20,7 +22,9 @@ class AuthController extends GetxController {
         await _authRepository.signInAuth(email: email, password: password);
     result.when(
       success: (user) {
+        //Save locally token on this first request
         isAuthenticated.value = true;
+        mUser = user;
         log('User authenticated is ${user.toString()}');
       },
       error: (errorMessage) {
@@ -30,5 +34,9 @@ class AuthController extends GetxController {
     );
 
     isLoading.value = false;
+  }
+
+  Future<void> validateToken() async {
+    //Get the token saved locally
   }
 }
