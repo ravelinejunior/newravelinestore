@@ -3,13 +3,12 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:newravelinestore/domain/controller/auth_controller.dart';
 import 'package:newravelinestore/domain/controller/user_controller.dart';
-import 'package:newravelinestore/domain/manager/test_manager.dart';
 import 'package:newravelinestore/src/utils/routes.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   Get.lazyPut<UserController>(() => UserController());
-  Get.lazyPut<TestControllerManager>(() => TestControllerManager());
-  Get.lazyPut<AuthController>(() => AuthController());
+  Get.put(AuthController());
   runApp(const MyApp());
 }
 

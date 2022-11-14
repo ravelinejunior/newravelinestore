@@ -113,7 +113,7 @@ class LoginScreen extends GetView<AuthController> {
                                 .then(
                               (_) {
                                 if (controller.isAuthenticated.value) {
-                                  Get.offAndToNamed(ConstantsRoutes.baseRoute);
+                                  // Get.offAndToNamed(ConstantsRoutes.baseRoute);
                                 } else {
                                   getErrorSnackbar("Authentication error",
                                       "Login failed, Error 400");

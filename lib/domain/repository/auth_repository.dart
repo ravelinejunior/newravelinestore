@@ -20,6 +20,7 @@ class AuthRepository {
       method: HttpAbstractMethod.post,
       body: {'email': email, 'password': password},
     );
+
     if (responseResult['result'] != null) {
       log('Login successfully authenticated');
       final user = UserModel.fromMap(responseResult['result']);

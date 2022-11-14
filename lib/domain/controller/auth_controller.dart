@@ -17,6 +17,13 @@ class AuthController extends GetxController {
 
   final utilsService = UtilsService();
 
+  @override
+  void onInit() {
+    super.onInit();
+
+    validateToken();
+  }
+
   Future<void> signIn({
     required String email,
     required String password,
@@ -45,6 +52,7 @@ class AuthController extends GetxController {
     String? token = await utilsService.getLocalData(key: tokenDataKey);
     if (token == null) {
       isAuthenticated.value = false;
+      Get.offAllNamed(ConstantsRoutes.loginRoute);
       return;
     } else {
       final AuthResult result = await _authRepository.validateToken(token);
@@ -76,6 +84,7 @@ class AuthController extends GetxController {
     //Save Data
     utilsService.saveLocalData(key: tokenDataKey, data: mUser!.token);
     isAuthenticated.value = true;
+    Get.offAllNamed(ConstantsRoutes.baseRoute);
     log('User authenticated is ${mUser.toString()}');
   }
 }
