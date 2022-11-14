@@ -15,35 +15,28 @@ class AuthRepository {
     required String email,
     required String password,
   }) async {
-    final responseResult = await _httpManager.restRequest(
+    final response = await _httpManager.restRequest(
       url: signInEndPoint,
       method: HttpAbstractMethod.post,
       body: {'email': email, 'password': password},
     );
 
-    if (responseResult['result'] != null) {
-      log('Login successfully authenticated');
-      final user = UserModel.fromMap(responseResult['result']);
-      return AuthResult.success(user);
-    } else {
-      log('Login fail');
-      return AuthResult.error(
-        authErrors.authErrorsString(
-          responseResult['error'],
-        ),
-      );
-    }
+    return handleUserOrError(response);
   }
 
   Future<AuthResult> validateToken(String token) async {
     final response = await _httpManager.restRequest(
         url: validateTokenEndPoint,
-        method: HttpAbstractMethod.get,
+        method: HttpAbstractMethod.post,
         headers: {'X-Parse-Session-Token': token});
 
+    return handleUserOrError(response);
+  }
+
+  AuthResult handleUserOrError(Map<dynamic, dynamic> response) {
     if (response['result'] != null) {
       log('Login successfully authenticated');
-      final user = UserModel.fromMap(response['result']);
+      final user = UserModel.fromJson(response['result']);
       return AuthResult.success(user);
     } else {
       log('Login fail');

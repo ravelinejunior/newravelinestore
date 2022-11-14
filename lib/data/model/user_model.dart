@@ -6,13 +6,13 @@ part 'user_model.g.dart';
 @JsonSerializable()
 class UserModel {
   @JsonKey(name: 'fullname')
-  String name;
-  String cpf;
-  String email;
-  String phone;
-  String password;
-  String token;
-  String id;
+  String? name;
+  String? cpf;
+  String? email;
+  String? phone;
+  String? password;
+  String? token;
+  String? id;
   UserModel({
     required this.name,
     required this.cpf,

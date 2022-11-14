@@ -99,16 +99,16 @@ class LoginScreen extends GetView<AuthController> {
                           ),
                         ),
                         onPressed: () {
-                          if (userController.userModel.value.email.isEmail &&
-                              userController.userModel.value.password.length >
+                          if (userController.userModel.value.email!.isEmail &&
+                              userController.userModel.value.password!.length >
                                   5) {
                             final email = userController.userModel.value.email;
                             final password =
                                 userController.userModel.value.password;
                             controller
                                 .signIn(
-                              email: email,
-                              password: password,
+                              email: email!,
+                              password: password!,
                             )
                                 .then(
                               (_) {

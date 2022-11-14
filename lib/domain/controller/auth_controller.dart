@@ -82,7 +82,7 @@ class AuthController extends GetxController {
 
   void saveTokenFromAuth() {
     //Save Data
-    utilsService.saveLocalData(key: tokenDataKey, data: mUser!.token);
+    utilsService.saveLocalData(key: tokenDataKey, data: mUser!.token!);
     isAuthenticated.value = true;
     Get.offAllNamed(ConstantsRoutes.baseRoute);
     log('User authenticated is ${mUser.toString()}');
