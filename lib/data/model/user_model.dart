@@ -25,7 +25,7 @@ class UserModel {
 
   static UserModel userModelInstance() {
     return UserModel(
-      name: "Raveline",
+      name: "",
       cpf: "",
       email: "",
       phone: "",

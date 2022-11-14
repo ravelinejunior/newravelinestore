@@ -1,3 +1,4 @@
+//Messages
 const String alreadyHaveAnAccountMsg = "Already have an account? Click here!";
 const String doesntHaveAnAccountMsg = "Doest not have an account? Click here!";
 const String forgotPassword = "Forget password?";
@@ -23,3 +24,6 @@ const String baseUrlEndPoint = "https://parseapi.back4app.com/functions/";
 const String signInEndPoint = "$baseUrlEndPoint/login";
 const String signUpEndPoint = "$baseUrlEndPoint/signup";
 const String validateTokenEndPoint = "$baseUrlEndPoint/validate-token";
+
+//Tokens
+const String tokenDataKey = 'token_key';
