@@ -13,18 +13,20 @@ class CustomTextField extends StatefulWidget {
   final String? initialValue;
   final TextEditingController? controller;
   final Function(String)? onChanged;
-  const CustomTextField({
-    Key? key,
-    required this.icon,
-    required this.label,
-    this.isSelected = false,
-    this.inputFormatters,
-    this.inputAction,
-    this.readOnly = false,
-    this.initialValue,
-    this.controller,
-    this.onChanged,
-  }) : super(key: key);
+  final TextInputType inputType;
+  const CustomTextField(
+      {Key? key,
+      required this.icon,
+      required this.label,
+      this.isSelected = false,
+      this.inputFormatters,
+      this.inputAction,
+      this.readOnly = false,
+      this.initialValue,
+      this.controller,
+      this.onChanged,
+      this.inputType = TextInputType.name})
+      : super(key: key);
 
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
@@ -48,6 +50,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         obscureText: isObscure,
         readOnly: widget.readOnly,
         initialValue: widget.initialValue,
+        keyboardType: widget.inputType,
         decoration: InputDecoration(
           prefixIcon: Icon(widget.icon),
           suffixIcon: widget.isSelected

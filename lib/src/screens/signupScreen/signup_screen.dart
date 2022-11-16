@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
@@ -5,12 +7,26 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
+import 'package:newravelinestore/data/model/user_model.dart';
+import 'package:newravelinestore/domain/controller/auth_controller.dart';
+import 'package:newravelinestore/domain/controller/user_controller.dart';
 import 'package:newravelinestore/src/components/custom_text_field.dart';
+import 'package:newravelinestore/src/components/snackbar_ext.dart';
 import 'package:newravelinestore/src/utils/constants.dart';
 import 'package:newravelinestore/src/utils/routes.dart';
 
-class SignupScreen extends StatelessWidget {
-  const SignupScreen({Key? key}) : super(key: key);
+class SignupScreen extends GetView<AuthController> {
+  SignupScreen({Key? key}) : super(key: key);
+
+  final _formKey = GlobalKey<FormState>();
+  final _emailTextController = TextEditingController();
+  final _nameTextController = TextEditingController();
+  final _cpfTextController = TextEditingController();
+  final _phoneTextController = TextEditingController();
+  final _passTextController = TextEditingController();
+
+  final _userController = Get.find<UserController>();
+  final _authController = Get.find<AuthController>();
 
   @override
   Widget build(BuildContext context) {
@@ -79,102 +95,149 @@ class SignupScreen extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Stack(
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        const CustomTextField(
-                          icon: Icons.person,
-                          label: 'Name',
-                          inputAction: TextInputAction.next,
-                        ),
-                        const CustomTextField(
+                    Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          CustomTextField(
+                            icon: Icons.person,
+                            label: 'Name',
+                            inputAction: TextInputAction.next,
+                            controller: _nameTextController,
+                            onChanged: (value) {
+                              _userController.setUserFullName(value);
+                            },
+                          ),
+                          CustomTextField(
                             icon: Icons.email,
                             label: 'Email',
-                            inputAction: TextInputAction.next),
-                        CustomTextField(
-                          icon: Icons.phone,
-                          label: 'Phone',
-                          inputFormatters: filteringPhone,
-                          inputAction: TextInputAction.next,
-                        ),
-                        CustomTextField(
-                          icon: Icons.document_scanner,
-                          label: 'CPF',
-                          inputFormatters: filteringCpf,
-                          inputAction: TextInputAction.next,
-                        ),
-                        const CustomTextField(
-                          icon: Icons.lock,
-                          label: 'Password',
-                          isSelected: true,
-                          inputAction: TextInputAction.done,
-                        ),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.teal,
-                            shadowColor: Colors.greenAccent,
-                            minimumSize: const Size(50, 50),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
-                            ),
+                            inputAction: TextInputAction.next,
+                            inputType: TextInputType.emailAddress,
+                            controller: _emailTextController,
+                            onChanged: (value) {
+                              _userController.setUserEmail(value);
+                            },
                           ),
-                          onPressed: () {},
-                          child: Text(
-                            "Signup",
-                            style: GoogleFonts.montserrat(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14,
-                            ),
+                          CustomTextField(
+                            icon: Icons.phone,
+                            label: 'Phone',
+                            inputFormatters: filteringPhone,
+                            inputAction: TextInputAction.next,
+                            inputType: TextInputType.phone,
+                            controller: _phoneTextController,
+                            onChanged: (value) {
+                              _userController.setUserPhone(value);
+                            },
                           ),
-                        ),
-                        const SizedBox(height: 16),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: const [
-                            Expanded(
-                              child: Divider(
-                                thickness: 1.0,
-                                color: Colors.grey,
+                          CustomTextField(
+                            icon: Icons.document_scanner,
+                            label: 'CPF',
+                            inputFormatters: filteringCpf,
+                            inputAction: TextInputAction.next,
+                            inputType: TextInputType.number,
+                            controller: _cpfTextController,
+                            onChanged: (value) {
+                              _userController.setUserCpf(value);
+                            },
+                          ),
+                          CustomTextField(
+                            icon: Icons.lock,
+                            label: 'Password',
+                            isSelected: true,
+                            inputAction: TextInputAction.done,
+                            controller: _passTextController,
+                            onChanged: (value) {
+                              _userController.setUserPassword(value);
+                            },
+                          ),
+                          Obx(() {
+                            return ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.teal,
+                                shadowColor: Colors.greenAccent,
+                                minimumSize: const Size(50, 50),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                              ),
+                              onPressed: _authController.isLoading.value
+                                  ? null
+                                  : () {
+                                      FocusScope.of(context).unfocus();
+                                      verifyFieldsAndSignup();
+                                    },
+                              child: GetX<AuthController>(
+                                builder: (controller) {
+                                  return controller.isLoading.value
+                                      ? const Padding(
+                                          padding: EdgeInsets.all(16),
+                                          child: CircularProgressIndicator
+                                              .adaptive(
+                                            valueColor: AlwaysStoppedAnimation(
+                                                Colors.white),
+                                          ),
+                                        )
+                                      : Text(
+                                          "Signup",
+                                          style: GoogleFonts.montserrat(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 14,
+                                          ),
+                                        );
+                                },
+                              ),
+                            );
+                          }),
+                          const SizedBox(height: 16),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: const [
+                              Expanded(
+                                child: Divider(
+                                  thickness: 1.0,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 4),
+                                child: Text('Ou'),
+                              ),
+                              Expanded(
+                                child: Divider(
+                                  thickness: 1.0,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 8),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.white,
+                              shadowColor: Colors.greenAccent,
+                              minimumSize: const Size(50, 50),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                  side: const BorderSide(
+                                      color: Colors.teal,
+                                      style: BorderStyle.solid,
+                                      width: 1)),
+                            ),
+                            onPressed: () {
+                              Get.toNamed(ConstantsRoutes.loginRoute);
+                            },
+                            child: Text(
+                              "Login",
+                              style: GoogleFonts.montserrat(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                                color: Colors.teal,
                               ),
                             ),
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 4),
-                              child: Text('Ou'),
-                            ),
-                            Expanded(
-                              child: Divider(
-                                thickness: 1.0,
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 8),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.white,
-                            shadowColor: Colors.greenAccent,
-                            minimumSize: const Size(50, 50),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(16),
-                                side: const BorderSide(
-                                    color: Colors.teal,
-                                    style: BorderStyle.solid,
-                                    width: 1)),
                           ),
-                          onPressed: () {
-                            Get.toNamed(ConstantsRoutes.loginRoute);
-                          },
-                          child: Text(
-                            "Login",
-                            style: GoogleFonts.montserrat(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14,
-                              color: Colors.teal,
-                            ),
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -184,5 +247,31 @@ class SignupScreen extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void verifyFieldsAndSignup() {
+    final user = _userController.userModel.value;
+    if (user.name?.isNotEmpty == true &&
+        user.name!.isAlphabetOnly &&
+        user.email?.isNotEmpty == true &&
+        user.email!.isEmail &&
+        user.cpf?.isNotEmpty == true &&
+        user.cpf!.isCpf &&
+        user.phone?.isNotEmpty == true &&
+        user.phone!.isPhoneNumber &&
+        user.password?.isNotEmpty == true &&
+        user.password!.length > 5) {
+      _signUpUser(user);
+    } else {
+      setErrorSnackbar(
+        'Fields non filled',
+        'All fields must be filled correctly',
+      );
+    }
+  }
+
+  _signUpUser(UserModel user) {
+    controller.signUp();
+    log('User signup successfully ${user.toString()}');
   }
 }

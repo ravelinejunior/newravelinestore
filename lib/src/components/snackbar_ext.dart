@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-getErrorSnackbar(String errorTitle, String errorMessage,
+setErrorSnackbar(String errorTitle, String errorMessage,
     {double overlayBluerTime = 2.0}) {
   Get.snackbar(
     errorTitle,
@@ -15,7 +15,7 @@ getErrorSnackbar(String errorTitle, String errorMessage,
   );
 }
 
-getSuccessSnackbar(String successMessage,
+setSuccessSnackbar(String successMessage,
     {String successMessageSentence = "", double overlayBluerTime = 2.0}) {
   Get.snackbar(
     successMessage,

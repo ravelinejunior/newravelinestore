@@ -79,6 +79,7 @@ class LoginScreen extends GetView<AuthController> {
                       onChanged: (value) {
                         userController.setUserEmail(value);
                       },
+                      inputType: TextInputType.emailAddress,
                     ),
                     CustomTextField(
                       icon: Icons.lock,
@@ -99,31 +100,7 @@ class LoginScreen extends GetView<AuthController> {
                           ),
                         ),
                         onPressed: () {
-                          if (userController.userModel.value.email!.isEmail &&
-                              userController.userModel.value.password!.length >
-                                  5) {
-                            final email = userController.userModel.value.email;
-                            final password =
-                                userController.userModel.value.password;
-                            controller
-                                .signIn(
-                              email: email!,
-                              password: password!,
-                            )
-                                .then(
-                              (_) {
-                                if (controller.isAuthenticated.value) {
-                                  // Get.offAndToNamed(ConstantsRoutes.baseRoute);
-                                } else {
-                                  getErrorSnackbar("Authentication error",
-                                      "Login failed, Error 400");
-                                }
-                              },
-                            );
-                          } else {
-                            getErrorSnackbar("Authentication error",
-                                "Email or password missformated");
-                          }
+                          loginUserVerified();
                         },
                         child: GetX<AuthController>(
                           builder: (controller) {
@@ -215,5 +192,30 @@ class LoginScreen extends GetView<AuthController> {
         ],
       ),
     );
+  }
+
+  void loginUserVerified() {
+    if (userController.userModel.value.email!.isEmail &&
+        userController.userModel.value.password!.length > 5) {
+      final email = userController.userModel.value.email;
+      final password = userController.userModel.value.password;
+      controller
+          .signIn(
+        email: email!,
+        password: password!,
+      )
+          .then(
+        (_) {
+          if (controller.isAuthenticated.value) {
+            // Get.offAndToNamed(ConstantsRoutes.baseRoute);
+          } else {
+            setErrorSnackbar("Authentication error", "Login failed, Error 400");
+          }
+        },
+      );
+    } else {
+      setErrorSnackbar(
+          "Authentication error", "Email or password missformated");
+    }
   }
 }

@@ -16,7 +16,25 @@ class UserController extends GetxController {
 
   void setUserPassword(String userPass) {
     userModel.update((user) {
-      user?.password = userPass;
+      user?.password = userPass.trim();
+    });
+  }
+
+  void setUserCpf(String userCpf) {
+    userModel.update((user) {
+      user?.cpf = userCpf.trim();
+    });
+  }
+
+  void setUserPhone(String userPhone) {
+    userModel.update((user) {
+      user?.phone = userPhone.trim();
+    });
+  }
+
+  void setUserFullName(String userName) {
+    userModel.update((user) {
+      user?.name = userName.trim();
     });
   }
 }

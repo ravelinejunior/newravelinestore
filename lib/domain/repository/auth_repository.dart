@@ -33,6 +33,16 @@ class AuthRepository {
     return handleUserOrError(response);
   }
 
+  Future<AuthResult> signUpAuth(UserModel? user) async {
+    final result = await _httpManager.restRequest(
+      url: signUpEndPoint,
+      method: HttpAbstractMethod.post,
+      body: user?.toJson(),
+    );
+
+    return handleUserOrError(result);
+  }
+
   AuthResult handleUserOrError(Map<dynamic, dynamic> response) {
     if (response['result'] != null) {
       log('Login successfully authenticated');

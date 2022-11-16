@@ -19,7 +19,7 @@ class Routes {
     ),
     GetPage(
       name: ConstantsRoutes.registerRoute,
-      page: () => const SignupScreen(),
+      page: () => SignupScreen(),
       transition: Transition.upToDown,
       transitionDuration: const Duration(seconds: 1),
       curve: Curves.linear,
@@ -40,7 +40,7 @@ class Routes {
     ),
     GetPage(
       name: ConstantsRoutes.personRoute,
-      page: () => const ProfileScreen(),
+      page: () => ProfileScreen(),
       transition: Transition.rightToLeftWithFade,
       transitionDuration: const Duration(seconds: 1),
       curve: Curves.linear,

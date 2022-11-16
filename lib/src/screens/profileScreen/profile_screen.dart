@@ -1,12 +1,15 @@
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:newravelinestore/domain/controller/auth_controller.dart';
 import 'package:newravelinestore/src/components/custom_text_field.dart';
 import 'package:newravelinestore/src/utils/app_data.dart' as app_data;
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+  ProfileScreen({Key? key}) : super(key: key);
+  final _authController = Get.find<AuthController>();
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +27,9 @@ class ProfileScreen extends StatelessWidget {
         title: const Text('User Profile'),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              _authController.signOut();
+            },
             icon: const Icon(Icons.logout_rounded),
           ),
         ],

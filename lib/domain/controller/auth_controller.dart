@@ -5,12 +5,19 @@ import 'package:newravelinestore/data/model/user_model.dart';
 import 'package:newravelinestore/data/services/utils_services.dart';
 import 'package:newravelinestore/domain/repository/auth_repository.dart';
 import 'package:newravelinestore/domain/result/auth_result.dart';
+import 'package:newravelinestore/src/components/snackbar_ext.dart';
 import 'package:newravelinestore/src/utils/constants.dart';
 import 'package:newravelinestore/src/utils/routes.dart';
 
 class AuthController extends GetxController {
   RxBool isLoading = false.obs;
   RxBool isAuthenticated = false.obs;
+
+  void setLoadingState() {
+    isLoading.update((loading) {
+      isLoading.value = !loading!;
+    });
+  }
 
   final _authRepository = AuthRepository();
   late UserModel? mUser;
@@ -28,7 +35,7 @@ class AuthController extends GetxController {
     required String email,
     required String password,
   }) async {
-    isLoading.value = true;
+    setLoadingState();
 
     AuthResult result =
         await _authRepository.signInAuth(email: email, password: password);
@@ -44,7 +51,7 @@ class AuthController extends GetxController {
       },
     );
 
-    isLoading.value = false;
+    setLoadingState();
   }
 
   Future<void> validateToken() async {
@@ -68,6 +75,23 @@ class AuthController extends GetxController {
         },
       );
     }
+  }
+
+  Future<void> signUp() async {
+    setLoadingState();
+    if (mUser != null) {
+      final result = await _authRepository.signUpAuth(mUser);
+      result.when(
+        success: (user) {
+          mUser = user;
+          saveTokenFromAuth();
+        },
+        error: (error) {
+          setErrorSnackbar("Error to SignOut", error);
+        },
+      );
+    }
+    setLoadingState();
   }
 
   Future<void> signOut() async {
