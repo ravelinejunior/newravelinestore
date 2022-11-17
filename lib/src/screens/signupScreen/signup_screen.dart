@@ -256,7 +256,6 @@ class SignupScreen extends GetView<AuthController> {
         user.email?.isNotEmpty == true &&
         user.email!.isEmail &&
         user.cpf?.isNotEmpty == true &&
-        user.cpf!.isCpf &&
         user.phone?.isNotEmpty == true &&
         user.phone!.isPhoneNumber &&
         user.password?.isNotEmpty == true &&
@@ -271,7 +270,7 @@ class SignupScreen extends GetView<AuthController> {
   }
 
   _signUpUser(UserModel user) {
-    controller.signUp();
+    controller.signUp(user);
     log('User signup successfully ${user.toString()}');
   }
 }

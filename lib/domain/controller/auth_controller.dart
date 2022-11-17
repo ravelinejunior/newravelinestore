@@ -77,20 +77,20 @@ class AuthController extends GetxController {
     }
   }
 
-  Future<void> signUp() async {
+  Future<void> signUp(UserModel user) async {
+    mUser = user;
     setLoadingState();
-    if (mUser != null) {
-      final result = await _authRepository.signUpAuth(mUser);
-      result.when(
-        success: (user) {
-          mUser = user;
-          saveTokenFromAuth();
-        },
-        error: (error) {
-          setErrorSnackbar("Error to SignOut", error);
-        },
-      );
-    }
+    final result = await _authRepository.signUpAuth(mUser);
+    result.when(
+      success: (user) {
+        mUser = user;
+        saveTokenFromAuth();
+      },
+      error: (error) {
+        setErrorSnackbar("Error to SignOut", error);
+      },
+    );
+
     setLoadingState();
   }
 
