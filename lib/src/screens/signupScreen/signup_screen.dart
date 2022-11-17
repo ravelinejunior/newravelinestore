@@ -252,7 +252,6 @@ class SignupScreen extends GetView<AuthController> {
   void verifyFieldsAndSignup() {
     final user = _userController.userModel.value;
     if (user.name?.isNotEmpty == true &&
-        user.name!.isAlphabetOnly &&
         user.email?.isNotEmpty == true &&
         user.email!.isEmail &&
         user.cpf?.isNotEmpty == true &&

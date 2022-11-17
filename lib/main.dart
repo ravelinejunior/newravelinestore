@@ -7,7 +7,7 @@ import 'package:newravelinestore/src/utils/routes.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  Get.lazyPut<UserController>(() => UserController());
+  Get.put(UserController());
   Get.put(AuthController());
   runApp(const MyApp());
 }
