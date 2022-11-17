@@ -37,4 +37,9 @@ class UserController extends GetxController {
       user?.name = userName.trim();
     });
   }
+
+  void clearUser() {
+    userModel.value = UserModel.userModelInstance();
+    userModel.refresh();
+  }
 }

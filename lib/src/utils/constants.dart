@@ -24,6 +24,7 @@ const String baseUrlEndPoint = "https://parseapi.back4app.com/functions/";
 const String signInEndPoint = "$baseUrlEndPoint/login";
 const String signUpEndPoint = "$baseUrlEndPoint/signup";
 const String validateTokenEndPoint = "$baseUrlEndPoint/validate-token";
+const String resetPasswordEndPoint = "$baseUrlEndPoint/reset-password";
 
 //Tokens
 const String tokenDataKey = 'token_key';

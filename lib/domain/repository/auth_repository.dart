@@ -43,6 +43,14 @@ class AuthRepository {
     return handleUserOrError(result);
   }
 
+  Future<void> resetPassword(String email) async {
+    await _httpManager.restRequest(
+      url: resetPasswordEndPoint,
+      method: HttpAbstractMethod.post,
+      body: {'email': email},
+    );
+  }
+
   AuthResult handleUserOrError(Map<dynamic, dynamic> response) {
     if (response['result'] != null) {
       log('Login successfully authenticated');

@@ -7,6 +7,7 @@ import 'package:newravelinestore/domain/controller/auth_controller.dart';
 import 'package:newravelinestore/domain/controller/user_controller.dart';
 import 'package:newravelinestore/src/components/custom_text_field.dart';
 import 'package:newravelinestore/src/components/snackbar_ext.dart';
+import 'package:newravelinestore/src/screens/loginScreen/components/forgot_password_dialog.dart';
 import 'package:newravelinestore/src/utils/constants.dart';
 import 'package:newravelinestore/src/utils/routes.dart';
 
@@ -135,7 +136,22 @@ class LoginScreen extends GetView<AuthController> {
                           primary: Colors.white,
                           backgroundColor: Colors.transparent,
                         ),
-                        onPressed: () {},
+                        onPressed: () async {
+                          final bool? result = await showDialog(
+                            context: context,
+                            builder: (_) {
+                              final user = userController.userModel.value;
+                              return ForgotPasswordDialog(
+                                email: user.email.toString(),
+                              );
+                            },
+                          );
+                          if (result ?? false) {
+                            setSuccessSnackbar(
+                              'A recovery link was send to your email!',
+                            );
+                          }
+                        },
                       ),
                     ),
                     Row(
