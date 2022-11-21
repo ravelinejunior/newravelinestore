@@ -2,10 +2,8 @@ import 'dart:developer';
 
 import 'package:newravelinestore/data/model/user_model.dart';
 import 'package:newravelinestore/data/services/http_manager.dart';
-import 'package:newravelinestore/domain/repository/auth_errors.dart'
-    // ignore: library_prefixes
-    as authErrors;
-import 'package:newravelinestore/domain/result/auth_result.dart';
+import 'package:newravelinestore/domain/repository/auth/auth_errors.dart';
+import 'package:newravelinestore/domain/result/auth/auth_result.dart';
 import 'package:newravelinestore/src/utils/constants.dart';
 
 class AuthRepository {
@@ -59,7 +57,7 @@ class AuthRepository {
     } else {
       log('Login fail');
       return AuthResult.error(
-        authErrors.authErrorsString(
+        authErrorsString(
           response['error'],
         ),
       );
