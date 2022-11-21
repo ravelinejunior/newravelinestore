@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
+import 'package:newravelinestore/domain/binding/home_binding.dart';
 import 'package:newravelinestore/src/screens/baseScreen/base_screen.dart';
 import 'package:newravelinestore/src/screens/detailScreen/detail_screen.dart';
 import 'package:newravelinestore/src/screens/loginScreen/login_screen.dart';
@@ -25,12 +26,14 @@ class Routes {
       curve: Curves.linear,
     ),
     GetPage(
-      name: ConstantsRoutes.baseRoute,
-      page: () => const BaseScreen(),
-      transition: Transition.upToDown,
-      transitionDuration: const Duration(seconds: 1),
-      curve: Curves.linear,
-    ),
+        name: ConstantsRoutes.baseRoute,
+        page: () => const BaseScreen(),
+        transition: Transition.upToDown,
+        transitionDuration: const Duration(seconds: 1),
+        curve: Curves.linear,
+        bindings: [
+          HomeBinding(),
+        ]),
     GetPage(
       name: ConstantsRoutes.detailRoute,
       page: () => const DetailScreen(),

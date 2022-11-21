@@ -2,7 +2,9 @@ import 'package:add_to_cart_animation/add_to_cart_animation.dart';
 import 'package:add_to_cart_animation/add_to_cart_icon.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
+import 'package:get/instance_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:newravelinestore/domain/controller/home_controller.dart';
 import 'package:newravelinestore/src/components/custom_shimmer.dart';
 import 'package:newravelinestore/src/screens/homeScreen/components/home_item_tile.dart';
 import 'package:newravelinestore/src/utils/app_data.dart' as app_data;
@@ -31,6 +33,7 @@ class _HomeTabState extends State<HomeTab> {
   @override
   void initState() {
     super.initState();
+    Get.put(HomeController()).printExampleBase();
 
     Future.delayed(const Duration(seconds: 3)).then((_) {
       setState(() {
