@@ -33,7 +33,6 @@ class _HomeTabState extends State<HomeTab> {
   @override
   void initState() {
     super.initState();
-    Get.put(HomeController()).printExampleBase();
 
     Future.delayed(const Duration(seconds: 3)).then((_) {
       setState(() {
