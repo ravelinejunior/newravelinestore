@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:newravelinestore/data/model/category_model.dart';
 import 'package:newravelinestore/domain/repository/home/home_repository.dart';
@@ -10,12 +9,18 @@ class HomeController extends GetxController {
 
   RxBool isLoading = false.obs;
   List<CategoryModel> allCategories = [];
+  CategoryModel? currentCategory;
 
   @override
   onInit() {
     super.onInit();
 
     getAllCategories();
+  }
+
+  void selectCategory(CategoryModel category) {
+    currentCategory = category;
+    update();
   }
 
   Future<void> getAllCategories() async {
@@ -27,7 +32,10 @@ class HomeController extends GetxController {
     homeResult.when(
       success: (data) {
         allCategories.assignAll(data);
-        debugPrint('All Categories $allCategories}');
+
+        if (allCategories.isEmpty) return;
+
+        selectCategory(allCategories.first);
       },
       error: (message) {
         setErrorSnackbar(
