@@ -26,6 +26,7 @@ const String signUpEndPoint = "$baseUrlEndPoint/signup";
 const String validateTokenEndPoint = "$baseUrlEndPoint/validate-token";
 const String resetPasswordEndPoint = "$baseUrlEndPoint/reset-password";
 const String getCategoriesEndPoint = "$baseUrlEndPoint/get-category-list";
+const String getProductsEndPoint = "$baseUrlEndPoint/get-product-list";
 
 //Tokens
 const String tokenDataKey = 'token_key';
