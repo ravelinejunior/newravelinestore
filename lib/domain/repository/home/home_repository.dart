@@ -37,7 +37,7 @@ class HomeRepository {
     if (result['result'] != null) {
       final List<ItemModel> data =
           List<Map<String, dynamic>>.from(result['result'])
-              .map((json) => ItemModel.fromMap(json))
+              .map((json) => ItemModel.fromJson(json))
               .toList();
 
       return HomeResult<ItemModel>.success(data);

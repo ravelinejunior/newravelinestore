@@ -22,7 +22,7 @@ class CartItemModel {
 
   factory CartItemModel.fromMap(Map<String, dynamic> map) {
     return CartItemModel(
-      item: ItemModel.fromMap(map['item'] as Map<String, dynamic>),
+      item: ItemModel.fromJson(map['item'] as Map<String, dynamic>),
       quantity: map['quantity'] as int,
     );
   }

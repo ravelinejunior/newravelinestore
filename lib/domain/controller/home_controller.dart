@@ -5,6 +5,7 @@ import 'package:newravelinestore/data/model/item_model.dart';
 import 'package:newravelinestore/domain/repository/home/home_repository.dart';
 import 'package:newravelinestore/domain/result/home/home_result.dart';
 import 'package:newravelinestore/src/components/snackbar_ext.dart';
+import 'package:newravelinestore/src/utils/constants.dart';
 
 class HomeController extends GetxController {
   final _homeRepository = HomeRepository();
@@ -53,10 +54,9 @@ class HomeController extends GetxController {
     setLoadingState(true);
 
     final Map<String, dynamic> body = {
-      'page': 0,
-      'title': null,
-      'categoryId': '5mjkt5ERRo',
-      'itemsPerPage': 6
+      'page': currentCategory!.pagination,
+      'categoryId': currentCategory!.id,
+      'itemsPerPage': itemsPerPage,
     };
 
     final HomeResult<ItemModel> result =

@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 import 'package:json_annotation/json_annotation.dart';
+
 part 'item_model.g.dart';
 
 @JsonSerializable()
@@ -27,7 +28,7 @@ class ItemModel {
     return _$ItemModelToJson(this);
   }
 
-  factory ItemModel.fromMap(Map<String, dynamic> map) {
+  factory ItemModel.fromJson(Map<String, dynamic> map) {
     return _$ItemModelFromJson(map);
   }
 
@@ -36,23 +37,5 @@ class ItemModel {
   @override
   String toString() {
     return 'ItemModel(id: $id, description: $description, itemName: $itemName, imgUrl: $imgUrl, unit: $unit, price: $price)';
-  }
-
-  ItemModel copyWith({
-    String? id,
-    String? description,
-    String? itemName,
-    String? imgUrl,
-    String? unit,
-    double? price,
-  }) {
-    return ItemModel(
-      id: id ?? this.id,
-      description: description ?? this.description,
-      itemName: itemName ?? this.itemName,
-      imgUrl: imgUrl ?? this.imgUrl,
-      unit: unit ?? this.unit,
-      price: price ?? this.price,
-    );
   }
 }

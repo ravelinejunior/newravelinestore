@@ -30,3 +30,4 @@ const String getProductsEndPoint = "$baseUrlEndPoint/get-product-list";
 
 //Tokens
 const String tokenDataKey = 'token_key';
+const int itemsPerPage = 6;
