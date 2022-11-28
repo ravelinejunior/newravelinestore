@@ -7,7 +7,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:newravelinestore/domain/controller/home_controller.dart';
 import 'package:newravelinestore/src/components/custom_shimmer.dart';
 import 'package:newravelinestore/src/screens/homeScreen/components/home_item_tile.dart';
-import 'package:newravelinestore/src/utils/app_data.dart' as app_data;
 import 'package:newravelinestore/src/utils/constants.dart';
 
 import 'components/category_tile.dart';
@@ -133,7 +132,7 @@ class _HomeTabState extends State<HomeTab> {
                 margin: const EdgeInsets.all(2),
                 padding: const EdgeInsets.only(left: 16),
                 height: MediaQuery.of(context).size.height / 10,
-                child: !controller.isLoading.value
+                child: !controller.isCategoryLoading.value
                     ? ListView.separated(
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (_, index) => CategoryTile(
@@ -175,7 +174,7 @@ class _HomeTabState extends State<HomeTab> {
             //GridView
             GetBuilder<HomeController>(builder: (controller) {
               return Expanded(
-                child: !controller.isLoading.value
+                child: !controller.isProductsLoading.value
                     ? GridView.builder(
                         padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
                         physics: const BouncingScrollPhysics(),
@@ -186,10 +185,10 @@ class _HomeTabState extends State<HomeTab> {
                           crossAxisSpacing: 10,
                           childAspectRatio: 9 / 11.5,
                         ),
-                        itemCount: app_data.items.length,
+                        itemCount: controller.allProducts.length,
                         itemBuilder: (_, index) {
                           return HomeItemTile(
-                            itemModel: app_data.items[index],
+                            itemModel: controller.allProducts[index],
                             cartAnimationMethod: itemSelectedCartAnimation,
                           );
                         },

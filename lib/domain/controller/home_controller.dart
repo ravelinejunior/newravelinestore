@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:newravelinestore/data/model/category_model.dart';
 import 'package:newravelinestore/data/model/item_model.dart';
@@ -10,9 +9,11 @@ import 'package:newravelinestore/src/utils/constants.dart';
 class HomeController extends GetxController {
   final _homeRepository = HomeRepository();
 
-  RxBool isLoading = false.obs;
+  RxBool isCategoryLoading = false.obs;
+  RxBool isProductsLoading = false.obs;
   List<CategoryModel> allCategories = [];
   CategoryModel? currentCategory;
+  List<ItemModel> get allProducts => currentCategory?.items ?? [];
 
   @override
   onInit() {
@@ -24,14 +25,16 @@ class HomeController extends GetxController {
   void selectCategory(CategoryModel category) {
     currentCategory = category;
     update();
+
+    if (currentCategory!.items.isNotEmpty) return;
     getAllProducts();
   }
 
   Future<void> getAllCategories() async {
-    setLoadingState(true);
+    setCategoryLoadingState(true);
     final HomeResult<CategoryModel> homeResult =
         await _homeRepository.getCategories();
-    setLoadingState(false);
+    setCategoryLoadingState(false);
 
     homeResult.when(
       success: (data) {
@@ -51,7 +54,7 @@ class HomeController extends GetxController {
   }
 
   Future<void> getAllProducts() async {
-    setLoadingState(true);
+    setProductsLoadingState(true);
 
     final Map<String, dynamic> body = {
       'page': currentCategory!.pagination,
@@ -61,11 +64,11 @@ class HomeController extends GetxController {
 
     final HomeResult<ItemModel> result =
         await _homeRepository.getAllProducts(body);
-    setLoadingState(false);
+    setProductsLoadingState(false);
 
     result.when(
       success: (data) {
-        debugPrint(data.toString());
+        currentCategory!.items = data;
       },
       error: (message) {
         setErrorSnackbar(
@@ -76,8 +79,13 @@ class HomeController extends GetxController {
     );
   }
 
-  void setLoadingState(bool value) {
-    isLoading.value = value;
+  void setCategoryLoadingState(bool value) {
+    isCategoryLoading.value = value;
+    update();
+  }
+
+  void setProductsLoadingState(bool value) {
+    isProductsLoading.value = value;
     update();
   }
 }
