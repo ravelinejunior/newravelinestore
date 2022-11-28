@@ -15,6 +15,11 @@ class HomeController extends GetxController {
   CategoryModel? currentCategory;
   List<ItemModel> get allProducts => currentCategory?.items ?? [];
 
+  bool get isLastPage {
+    if (currentCategory!.items.length < itemsPerPage) return true;
+    return currentCategory!.items.length * itemsPerPage > allProducts.length;
+  }
+
   @override
   onInit() {
     super.onInit();
@@ -68,7 +73,7 @@ class HomeController extends GetxController {
 
     result.when(
       success: (data) {
-        currentCategory!.items = data;
+        currentCategory!.items.addAll(data);
       },
       error: (message) {
         setErrorSnackbar(
@@ -87,5 +92,10 @@ class HomeController extends GetxController {
   void setProductsLoadingState(bool value) {
     isProductsLoading.value = value;
     update();
+  }
+
+  void loadMoreProducts() {
+    currentCategory!.pagination++;
+    getAllProducts();
   }
 }

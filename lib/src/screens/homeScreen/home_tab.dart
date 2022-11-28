@@ -127,49 +127,51 @@ class _HomeTabState extends State<HomeTab> {
             ),
 
             //Categories
-            GetBuilder<HomeController>(builder: (controller) {
-              return Container(
-                margin: const EdgeInsets.all(2),
-                padding: const EdgeInsets.only(left: 16),
-                height: MediaQuery.of(context).size.height / 10,
-                child: !controller.isCategoryLoading.value
-                    ? ListView.separated(
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (_, index) => CategoryTile(
-                          category:
-                              controller.allCategories[index].title.toString(),
-                          isSelected: controller.allCategories[index] ==
-                              controller.currentCategory,
-                          onPressed: () {
-                            controller.selectCategory(
-                              controller.allCategories[index],
-                            );
-                          },
-                        ),
-                        separatorBuilder: (_, index) =>
-                            const SizedBox(width: 8),
-                        itemCount: controller.allCategories.length,
-                      )
-                    : ListView(
-                        scrollDirection: Axis.horizontal,
-                        children: List.generate(
-                          10,
-                          (_) => Container(
-                            margin: const EdgeInsets.symmetric(
-                              horizontal: 4,
-                              vertical: 16,
-                            ),
-                            alignment: Alignment.center,
-                            child: CustomShimmer(
-                              height: double.infinity,
-                              width: MediaQuery.of(context).size.width / 6,
-                              isRounded: true,
-                              borderRadius: BorderRadius.circular(24),
-                            ),
+            GetBuilder<HomeController>(
+              builder: (controller) {
+                return Container(
+                  margin: const EdgeInsets.all(2),
+                  padding: const EdgeInsets.only(left: 16),
+                  height: MediaQuery.of(context).size.height / 10,
+                  child: !controller.isCategoryLoading.value
+                      ? ListView.separated(
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (_, index) => CategoryTile(
+                            category: controller.allCategories[index].title
+                                .toString(),
+                            isSelected: controller.allCategories[index] ==
+                                controller.currentCategory,
+                            onPressed: () {
+                              controller.selectCategory(
+                                controller.allCategories[index],
+                              );
+                            },
                           ),
-                        )),
-              );
-            }),
+                          separatorBuilder: (_, index) =>
+                              const SizedBox(width: 8),
+                          itemCount: controller.allCategories.length,
+                        )
+                      : ListView(
+                          scrollDirection: Axis.horizontal,
+                          children: List.generate(
+                            10,
+                            (_) => Container(
+                              margin: const EdgeInsets.symmetric(
+                                horizontal: 4,
+                                vertical: 16,
+                              ),
+                              alignment: Alignment.center,
+                              child: CustomShimmer(
+                                height: double.infinity,
+                                width: MediaQuery.of(context).size.width / 6,
+                                isRounded: true,
+                                borderRadius: BorderRadius.circular(24),
+                              ),
+                            ),
+                          )),
+                );
+              },
+            ),
 
             //GridView
             GetBuilder<HomeController>(builder: (controller) {
@@ -187,6 +189,12 @@ class _HomeTabState extends State<HomeTab> {
                         ),
                         itemCount: controller.allProducts.length,
                         itemBuilder: (_, index) {
+                          if (((index + 1) == controller.allProducts.length) &&
+                              !controller.isLastPage) {
+                            // List
+                            controller.loadMoreProducts();
+                          }
+
                           return HomeItemTile(
                             itemModel: controller.allProducts[index],
                             cartAnimationMethod: itemSelectedCartAnimation,
