@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:newravelinestore/data/model/category_model.dart';
 import 'package:newravelinestore/data/model/item_model.dart';
@@ -15,6 +16,8 @@ class HomeController extends GetxController {
   CategoryModel? currentCategory;
   List<ItemModel> get allProducts => currentCategory?.items ?? [];
 
+  RxString searchTitle = "".obs;
+
   bool get isLastPage {
     if (currentCategory!.items.length < itemsPerPage) return true;
     return currentCategory!.items.length * itemsPerPage > allProducts.length;
@@ -23,6 +26,16 @@ class HomeController extends GetxController {
   @override
   onInit() {
     super.onInit();
+
+    debounce(
+      searchTitle,
+      (_) {
+        debugPrint(searchTitle.value);
+      },
+      time: const Duration(
+        milliseconds: 500,
+      ),
+    );
 
     getAllCategories();
   }
@@ -97,5 +110,10 @@ class HomeController extends GetxController {
   void loadMoreProducts() {
     currentCategory!.pagination++;
     getAllProducts();
+  }
+
+  void setSearchTitle(String value) {
+    searchTitle.value = value;
+    refresh();
   }
 }

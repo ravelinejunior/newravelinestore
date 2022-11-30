@@ -23,6 +23,8 @@ class _HomeTabState extends State<HomeTab> {
   GlobalKey<CartIconKey> gkCart = GlobalKey<CartIconKey>();
   late Function(GlobalKey) runAddToCardAnimation;
 
+  final homeController = Get.find<HomeController>();
+
   void itemSelectedCartAnimation(GlobalKey gkImage) {
     runAddToCardAnimation(gkImage);
   }
@@ -107,6 +109,9 @@ class _HomeTabState extends State<HomeTab> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
               child: TextFormField(
+                onChanged: (value) {
+                  homeController.setSearchTitle(value);
+                },
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
