@@ -5,6 +5,7 @@ import 'package:newravelinestore/data/model/item_model.dart';
 import 'package:newravelinestore/domain/repository/home/home_repository.dart';
 import 'package:newravelinestore/domain/result/home/home_result.dart';
 import 'package:newravelinestore/src/components/snackbar_ext.dart';
+import 'package:newravelinestore/src/utils/app_data.dart';
 import 'package:newravelinestore/src/utils/constants.dart';
 
 class HomeController extends GetxController {
@@ -38,6 +39,42 @@ class HomeController extends GetxController {
     );
 
     getAllCategories();
+  }
+
+  void filterByTitle() {
+    //Erase all the products from categories
+    for (var category in allCategories) {
+      category.items.clear();
+      category.pagination = 0;
+    }
+
+    if (searchTitle.value.isEmpty) {
+      allCategories.removeAt(0);
+    } else {
+      final CategoryModel? c = allCategories.firstWhereOrNull(
+        (_category) => _category.id == '',
+      );
+
+      if (c == null) {
+        //Create a new category with all products
+        final allProductsCategory = CategoryModel(
+          items: items,
+          pagination: 0,
+          title: 'All',
+          id: '',
+        );
+
+        allCategories.insert(0, allProductsCategory);
+      } else {
+        //Remove all items because products already exists
+        c.items.clear();
+        c.pagination = 0;
+      }
+    }
+
+    currentCategory = allCategories.first;
+    update();
+    getAllProducts();
   }
 
   void selectCategory(CategoryModel category) {
