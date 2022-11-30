@@ -30,7 +30,7 @@ class HomeController extends GetxController {
     debounce(
       searchTitle,
       (_) {
-        debugPrint(searchTitle.value);
+        update();
       },
       time: const Duration(
         milliseconds: 500,
@@ -114,6 +114,5 @@ class HomeController extends GetxController {
 
   void setSearchTitle(String value) {
     searchTitle.value = value;
-    refresh();
   }
 }

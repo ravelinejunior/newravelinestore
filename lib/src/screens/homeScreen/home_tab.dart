@@ -23,7 +23,7 @@ class _HomeTabState extends State<HomeTab> {
   GlobalKey<CartIconKey> gkCart = GlobalKey<CartIconKey>();
   late Function(GlobalKey) runAddToCardAnimation;
 
-  final homeController = Get.find<HomeController>();
+  final TextEditingController _editingController = TextEditingController();
 
   void itemSelectedCartAnimation(GlobalKey gkImage) {
     runAddToCardAnimation(gkImage);
@@ -106,25 +106,43 @@ class _HomeTabState extends State<HomeTab> {
         child: Column(
           children: [
             //Search Field
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-              child: TextFormField(
-                onChanged: (value) {
-                  homeController.setSearchTitle(value);
-                },
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  isDense: true,
-                  hintText: hintTextSearchHomeString,
-                  hintStyle: GoogleFonts.lato(color: Colors.grey.shade400),
-                  prefixIcon:
-                      Icon(Icons.search, color: Colors.red[700], size: 20),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(60),
-                    borderSide: const BorderSide(
-                      width: 0,
-                      style: BorderStyle.none,
+            GetBuilder<HomeController>(
+              builder: (controller) => Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                child: TextFormField(
+                  controller: _editingController,
+                  onChanged: (value) {
+                    controller.setSearchTitle(value);
+                  },
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white,
+                    isDense: true,
+                    hintText: hintTextSearchHomeString,
+                    hintStyle: GoogleFonts.lato(color: Colors.grey.shade400),
+                    prefixIcon:
+                        Icon(Icons.search, color: Colors.red[700], size: 20),
+                    suffixIcon: controller.searchTitle.value.isNotEmpty
+                        ? IconButton(
+                            onPressed: () {
+                              _editingController.clear();
+                              FocusManager.instance.primaryFocus?.unfocus();
+                              controller.setSearchTitle('');
+                            },
+                            icon: const Icon(
+                              Icons.close,
+                              color: Colors.redAccent,
+                              size: 20,
+                            ),
+                          )
+                        : null,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(60),
+                      borderSide: const BorderSide(
+                        width: 0,
+                        style: BorderStyle.none,
+                      ),
                     ),
                   ),
                 ),
