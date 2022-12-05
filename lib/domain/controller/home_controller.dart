@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:newravelinestore/data/model/category_model.dart';
 import 'package:newravelinestore/data/model/item_model.dart';
@@ -30,9 +29,7 @@ class HomeController extends GetxController {
 
     debounce(
       searchTitle,
-      (_) {
-        update();
-      },
+      (_) => filterByTitle(),
       time: const Duration(
         milliseconds: 500,
       ),
@@ -57,14 +54,7 @@ class HomeController extends GetxController {
 
       if (c == null) {
         //Create a new category with all products
-        final allProductsCategory = CategoryModel(
-          items: items,
-          pagination: 0,
-          title: 'All',
-          id: '',
-        );
-
-        allCategories.insert(0, allProductsCategory);
+        createAllCategories();
       } else {
         //Remove all items because products already exists
         c.items.clear();
@@ -75,6 +65,17 @@ class HomeController extends GetxController {
     currentCategory = allCategories.first;
     update();
     getAllProducts();
+  }
+
+  void createAllCategories() {
+    final allProductsCategory = CategoryModel(
+      items: items,
+      pagination: 0,
+      title: 'All',
+      id: '',
+    );
+
+    allCategories.insert(0, allProductsCategory);
   }
 
   void selectCategory(CategoryModel category) {
@@ -116,6 +117,14 @@ class HomeController extends GetxController {
       'categoryId': currentCategory!.id,
       'itemsPerPage': itemsPerPage,
     };
+
+    if (searchTitle.value.isNotEmpty) {
+      body['title'] = searchTitle.value;
+
+      if (currentCategory?.id == '') {
+        body.remove('categoryId');
+      }
+    }
 
     final HomeResult<ItemModel> result =
         await _homeRepository.getAllProducts(body);

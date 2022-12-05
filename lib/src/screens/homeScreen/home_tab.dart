@@ -200,29 +200,55 @@ class _HomeTabState extends State<HomeTab> {
             GetBuilder<HomeController>(builder: (controller) {
               return Expanded(
                 child: !controller.isProductsLoading.value
-                    ? GridView.builder(
-                        padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-                        physics: const BouncingScrollPhysics(),
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          mainAxisSpacing: 10,
-                          crossAxisSpacing: 10,
-                          childAspectRatio: 9 / 11.5,
-                        ),
-                        itemCount: controller.allProducts.length,
-                        itemBuilder: (_, index) {
-                          if (((index + 1) == controller.allProducts.length) &&
-                              !controller.isLastPage) {
-                            // List
-                            controller.loadMoreProducts();
-                          }
+                    ? Visibility(
+                        visible: (controller.currentCategory?.items ?? [])
+                            .isNotEmpty,
+                        child: GridView.builder(
+                          padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                          physics: const BouncingScrollPhysics(),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 10,
+                            crossAxisSpacing: 10,
+                            childAspectRatio: 9 / 11.5,
+                          ),
+                          itemCount: controller.allProducts.length,
+                          itemBuilder: (_, index) {
+                            if (((index + 1) ==
+                                    controller.allProducts.length) &&
+                                !controller.isLastPage) {
+                              // List
+                              controller.loadMoreProducts();
+                            }
 
-                          return HomeItemTile(
-                            itemModel: controller.allProducts[index],
-                            cartAnimationMethod: itemSelectedCartAnimation,
-                          );
-                        },
+                            return HomeItemTile(
+                              itemModel: controller.allProducts[index],
+                              cartAnimationMethod: itemSelectedCartAnimation,
+                            );
+                          },
+                        ),
+                        replacement: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(
+                                Icons.search_off,
+                                size: 60,
+                                color: Colors.teal,
+                              ),
+                              Text(
+                                'There is no items to show!!!',
+                                style: GoogleFonts.lato(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
                       )
                     : GridView.count(
                         padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),

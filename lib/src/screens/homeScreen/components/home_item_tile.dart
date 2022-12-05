@@ -39,8 +39,11 @@ class _HomeItemTileState extends State<HomeItemTile> {
       children: [
         InkWell(
           splashColor: Colors.teal.shade100,
-          onTap: () => Get.toNamed(ConstantsRoutes.detailRoute,
-              arguments: widget.itemModel),
+          onTap: () {
+            FocusManager.instance.primaryFocus?.unfocus();
+            Get.toNamed(ConstantsRoutes.detailRoute,
+                arguments: widget.itemModel);
+          },
           child: Card(
             elevation: 8,
             clipBehavior: Clip.antiAlias,
@@ -56,10 +59,16 @@ class _HomeItemTileState extends State<HomeItemTile> {
                   // image
                   Expanded(
                     child: Hero(
-                      child: Image.network(
-                        widget.itemModel.imgUrl,
-                        key: imageGlobalKey,
-                      ),
+                      child: !widget.itemModel.imgUrl
+                              .contains('assets/images/fruits')
+                          ? Image.network(
+                              widget.itemModel.imgUrl,
+                              key: imageGlobalKey,
+                            )
+                          : Image.asset(
+                              widget.itemModel.imgUrl,
+                              key: imageGlobalKey,
+                            ),
                       tag: Random(100000000),
                     ),
                   ),

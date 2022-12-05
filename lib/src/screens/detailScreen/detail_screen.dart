@@ -50,7 +50,9 @@ class _DetailScreenState extends State<DetailScreen> {
             child: SizedBox(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height / 2.6,
-              child: Image.asset(item.imgUrl),
+              child: !item.imgUrl.contains('assets/images/fruits')
+                  ? Image.network(item.imgUrl)
+                  : Image.asset(item.imgUrl),
             ),
           ),
           Expanded(
