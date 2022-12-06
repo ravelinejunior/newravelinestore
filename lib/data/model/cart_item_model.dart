@@ -1,8 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:json_annotation/json_annotation.dart';
 import 'package:newravelinestore/data/model/item_model.dart';
 
+part 'cart_item_model.g.dart';
+
+@JsonSerializable()
 class CartItemModel {
   ItemModel item;
   int quantity;
