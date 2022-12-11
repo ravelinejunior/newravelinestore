@@ -33,4 +33,34 @@ class CartItemsRepository {
       );
     }
   }
+
+  Future<CartItemsResult<String>> addItemToCartRequest({
+    required String userId,
+    required String userToken,
+    required String productId,
+    required int quantity,
+  }) async {
+    final result = await _httpManager.restRequest(
+      url: addItemToCartEndPoint,
+      method: HttpAbstractMethod.post,
+      body: {
+        'user': userId,
+        'quantity': quantity,
+        'productId': productId,
+      },
+      headers: {
+        'token': userToken,
+      },
+    );
+
+    if (result['result'] != null) {
+      // Add Item
+      return CartItemsResult<String>.success(result['result']);
+    } else {
+      // Error
+      return CartItemsResult.error(
+        'Something went wrong adding the cart items',
+      );
+    }
+  }
 }
