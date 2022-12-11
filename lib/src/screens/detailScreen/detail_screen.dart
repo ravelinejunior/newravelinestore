@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:newravelinestore/data/model/item_model.dart';
 import 'package:newravelinestore/data/services/utils_services.dart';
+import 'package:newravelinestore/domain/controller/cart_controller.dart';
 import 'package:newravelinestore/src/components/quantity_custom_widget.dart';
 import 'package:newravelinestore/src/utils/constants.dart';
 
@@ -17,6 +18,7 @@ class DetailScreen extends StatefulWidget {
 class _DetailScreenState extends State<DetailScreen> {
   final ItemModel item = Get.arguments;
   final UtilsService utilsService = UtilsService();
+  final cartController = Get.find<CartController>();
   int quantitySelected = 1;
 
   @override
@@ -35,7 +37,13 @@ class _DetailScreenState extends State<DetailScreen> {
       appBar: AppBar(
         leading: InkWell(
           splashColor: Colors.teal.shade100,
-          onTap: () => Get.back(),
+          onTap: () {
+            cartController.addItemToCart(
+              item: item,
+              quantity: quantitySelected,
+            );
+            Get.back();
+          },
           child: const Icon(
             Icons.arrow_back_ios,
             color: Colors.grey,

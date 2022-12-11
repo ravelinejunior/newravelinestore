@@ -41,21 +41,20 @@ class CartItemsRepository {
     required int quantity,
   }) async {
     final result = await _httpManager.restRequest(
-      url: addItemToCartEndPoint,
-      method: HttpAbstractMethod.post,
-      body: {
-        'user': userId,
-        'quantity': quantity,
-        'productId': productId,
-      },
-      headers: {
-        'token': userToken,
-      },
-    );
+        url: addItemToCartEndPoint,
+        method: HttpAbstractMethod.post,
+        body: {
+          'user': userId,
+          'quantity': quantity,
+          'productId': productId,
+        },
+        headers: {
+          'X-Parse-Session-Token': userToken,
+        });
 
     if (result['result'] != null) {
       // Add Item
-      return CartItemsResult<String>.success(result['result']);
+      return CartItemsResult<String>.success(result['result']['id']);
     } else {
       // Error
       return CartItemsResult.error(

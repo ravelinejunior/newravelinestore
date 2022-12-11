@@ -4,6 +4,7 @@ import 'package:newravelinestore/data/model/cart_item_model.dart';
 import 'package:newravelinestore/data/model/item_model.dart';
 import 'package:newravelinestore/domain/controller/auth_controller.dart';
 import 'package:newravelinestore/domain/repository/items/cart_items_repository.dart';
+import 'package:newravelinestore/domain/result/items/cart_items_result.dart';
 import 'package:newravelinestore/src/components/snackbar_ext.dart';
 
 class CartController extends GetxController {
@@ -51,20 +52,25 @@ class CartController extends GetxController {
     } else {
       //Doesnt exists
 
-      final result = await cartRepository.addItemToCartRequest(
-        userId: '',
-        userToken: '',
+      final user = authController.mUser!;
+
+      final CartItemsResult<String> result =
+          await cartRepository.addItemToCartRequest(
+        userId: user.id.toString(),
+        userToken: user.token.toString(),
         productId: item.id,
         quantity: quantity,
       );
 
       result.when(
-        success: (data) {
+        success: (cartItemId) {
           cartItems.add(
-            CartItemModel(id: data['result'], item: item, quantity: quantity),
+            CartItemModel(id: cartItemId, item: item, quantity: quantity),
           );
         },
-        error: (message) {},
+        error: (message) {
+          setErrorSnackbar('Add Cart Error', message);
+        },
       );
     }
 
