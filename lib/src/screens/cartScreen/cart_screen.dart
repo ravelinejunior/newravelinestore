@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:newravelinestore/data/model/cart_item_model.dart';
 import 'package:newravelinestore/data/services/utils_services.dart';
-import 'package:newravelinestore/src/components/payment_dialog.dart';
-import 'package:newravelinestore/src/screens/cartScreen/components/item_cart_tile.dart';
+import 'package:newravelinestore/domain/controller/cart_controller.dart';
 import 'package:newravelinestore/src/utils/constants.dart';
-import 'package:newravelinestore/src/utils/app_data.dart' as app_data;
+
+import 'components/item_cart_tile.dart';
 
 class CartTab extends StatefulWidget {
   const CartTab({Key? key}) : super(key: key);
@@ -15,20 +15,6 @@ class CartTab extends StatefulWidget {
 }
 
 class _CartTabState extends State<CartTab> {
-  void removeItemFromCart(CartItemModel cartItem) {
-    setState(() {
-      app_data.cartItems.remove(cartItem);
-    });
-  }
-
-  double cartTotalPrice() {
-    double totalPrice = 0.0;
-    for (var itemC in app_data.cartItems) {
-      totalPrice += itemC.totalQuantity();
-    }
-    return totalPrice;
-  }
-
   @override
   Widget build(BuildContext context) {
     final UtilsService utilsService = UtilsService();
@@ -41,22 +27,23 @@ class _CartTabState extends State<CartTab> {
       body: Column(
         children: [
           Expanded(
-            child: ListView.separated(
-              itemBuilder: (_, index) {
-                final itemCart = app_data.cartItems[index];
-                return ItemCartTile(
-                  cartItem: itemCart,
-                  function: removeItemFromCart,
-                );
-              },
-              separatorBuilder: (_, __) {
-                return const Divider(
-                  indent: 4,
-                  endIndent: 4,
-                  color: Colors.grey,
-                );
-              },
-              itemCount: app_data.cartItems.length,
+            child: GetBuilder<CartController>(
+              builder: (controller) => ListView.separated(
+                itemBuilder: (_, index) {
+                  final itemCart = controller.cartItems[index];
+                  return ItemCartTile(
+                    cartItem: itemCart,
+                  );
+                },
+                separatorBuilder: (_, __) {
+                  return const Divider(
+                    indent: 4,
+                    endIndent: 4,
+                    color: Colors.grey,
+                  );
+                },
+                itemCount: controller.cartItems.length,
+              ),
             ),
           ),
           const SizedBox(height: 16),
@@ -87,14 +74,17 @@ class _CartTabState extends State<CartTab> {
                       ),
                     ),
                   ),
-                  Text(
-                    utilsService.priceToCurrencyString(cartTotalPrice()),
-                    style: GoogleFonts.lato(
-                      color: Colors.teal,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  GetBuilder<CartController>(builder: (controller) {
+                    return Text(
+                      utilsService
+                          .priceToCurrencyString(controller.cartTotalPrice()),
+                      style: GoogleFonts.lato(
+                        color: Colors.teal,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    );
+                  }),
                   const SizedBox(height: 4),
                   ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
@@ -111,9 +101,11 @@ class _CartTabState extends State<CartTab> {
                       if (result ?? false) {
                         showDialog(
                           context: context,
-                          builder: (_) => PaymentDialog(
+                          builder:
+                              (_) => /* PaymentDialog(
                             order: app_data.ordersModel.first,
-                          ),
+                          ), */
+                                  Container(),
                         );
                       }
                     },

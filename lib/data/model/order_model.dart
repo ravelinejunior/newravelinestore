@@ -26,7 +26,7 @@ class OrderModel {
       'id': id,
       'dateCreated': dateCreated.millisecondsSinceEpoch,
       'dateOverdue': dateOverdue.millisecondsSinceEpoch,
-      'items': items.map((x) => x.toMap()).toList(),
+      'items': items.map((x) => x.toJson()).toList(),
       'status': status,
       'copyAndPaste': copyAndPaste,
       'total': total,

@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:newravelinestore/src/screens/ordersScreen/components/orders_tile.dart';
-import 'package:newravelinestore/src/utils/app_data.dart' as app_data;
 
 class OrdersScreen extends StatelessWidget {
   const OrdersScreen({Key? key}) : super(key: key);
@@ -16,11 +14,12 @@ class OrdersScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         physics: const BouncingScrollPhysics(),
         itemBuilder: (_, index) {
-          final order = app_data.ordersModel[index];
-          return OrdersTile(order: order);
+          /* final order = app_data.ordersModel[index];
+          return OrdersTile(order: order); */
+          return Container();
         },
         separatorBuilder: (_, __) => const SizedBox(height: 8),
-        itemCount: app_data.ordersModel.length,
+        itemCount: 0,
       ),
     );
   }

@@ -1,13 +1,13 @@
-import 'dart:developer';
-
+import 'package:flutter/material.dart';
+import 'package:newravelinestore/data/model/cart_item_model.dart';
 import 'package:newravelinestore/data/services/http_manager.dart';
+import 'package:newravelinestore/domain/result/items/cart_items_result.dart';
 import 'package:newravelinestore/src/utils/constants.dart';
-import 'package:retrofit/http.dart';
 
 class CartItemsRepository {
   final _httpManager = HttpManager();
 
-  Future getCartItems({
+  Future<CartItemsResult<List<CartItemModel>>> getCartItems({
     required String? token,
     required String? userId,
   }) async {
@@ -15,17 +15,22 @@ class CartItemsRepository {
       url: getCartItemsEndPoint,
       method: HttpAbstractMethod.post,
       headers: {'X-Parse-Session-Token': token},
-      body: {
-        'user': userId,
-      },
+      body: {'user': userId},
     );
-
+    debugPrint(result.toString());
     if (result['result'] != null) {
       //Treat data
-      log(result['result'].toString(), name: 'Data_Cart_Items');
+      final List<CartItemModel> data =
+          List<Map<String, dynamic>>.from(result['result'])
+              .map((json) => CartItemModel.fromJson(json))
+              .toList();
+
+      return CartItemsResult<List<CartItemModel>>.success(data);
     } else {
       //Return message
-      log(result['result'], name: 'Data_Cart_Items_Error');
+      return CartItemsResult<List<CartItemModel>>.error(
+        'Something went wrong getting the cart items',
+      );
     }
   }
 }

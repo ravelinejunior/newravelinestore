@@ -1,6 +1,4 @@
-import 'package:newravelinestore/data/model/cart_item_model.dart';
 import 'package:newravelinestore/data/model/item_model.dart';
-import 'package:newravelinestore/data/model/order_model.dart';
 import 'package:newravelinestore/data/model/user_model.dart';
 
 ItemModel apple = ItemModel(
@@ -80,20 +78,20 @@ final List<String> categories = [
 ];
 
 //List of carts
-final List<CartItemModel> cartItems = [
+/* final List<CartItemModel> cartItems = [
   CartItemModel(item: apple, quantity: 4),
   CartItemModel(item: guava, quantity: 1),
   CartItemModel(item: papaya, quantity: 3),
   CartItemModel(item: mango, quantity: 5),
   CartItemModel(item: grape, quantity: 4),
   CartItemModel(item: kiwi, quantity: 12),
-];
+]; */
 
 //Test User
 final genUser = UserModel.userModelInstance();
 
 //Testing Order Screen
-final List<OrderModel> ordersModel = [
+/* final List<OrderModel> ordersModel = [
   OrderModel(
     id: 168152,
     dateCreated: DateTime.parse('2022-11-29 22:11:02'),
@@ -112,4 +110,4 @@ final List<OrderModel> ordersModel = [
     copyAndPaste: "NSKJND6518615",
     total: 120.30,
   )
-];
+]; */

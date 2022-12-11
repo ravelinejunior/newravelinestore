@@ -1,5 +1,4 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
 
 import 'package:json_annotation/json_annotation.dart';
 import 'package:newravelinestore/data/model/item_model.dart';
@@ -8,31 +7,26 @@ part 'cart_item_model.g.dart';
 
 @JsonSerializable()
 class CartItemModel {
+  String id;
+
+  @JsonKey(name: 'product')
   ItemModel item;
+
   int quantity;
+
   CartItemModel({
+    required this.id,
     required this.item,
     required this.quantity,
   });
 
   double totalQuantity() => quantity * item.price;
 
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'item': item.toMap(),
-      'quantity': quantity,
-    };
+  Map<String, dynamic> toJson() {
+    return _$CartItemModelToJson(this);
   }
 
-  factory CartItemModel.fromMap(Map<String, dynamic> map) {
-    return CartItemModel(
-      item: ItemModel.fromJson(map['item'] as Map<String, dynamic>),
-      quantity: map['quantity'] as int,
-    );
+  factory CartItemModel.fromJson(Map<String, dynamic> json) {
+    return _$CartItemModelFromJson(json);
   }
-
-  String toJson() => json.encode(toMap());
-
-  factory CartItemModel.fromJson(String source) =>
-      CartItemModel.fromMap(json.decode(source) as Map<String, dynamic>);
 }

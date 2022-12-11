@@ -8,10 +8,8 @@ class ItemCartTile extends StatefulWidget {
   const ItemCartTile({
     Key? key,
     required this.cartItem,
-    required this.function,
   }) : super(key: key);
   final CartItemModel cartItem;
-  final Function(CartItemModel cartItem) function;
 
   @override
   State<ItemCartTile> createState() => _ItemCartTileState();
@@ -27,11 +25,17 @@ class _ItemCartTileState extends State<ItemCartTile> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       child: ListTile(
         //Image
-        leading: Image.asset(
-          widget.cartItem.item.imgUrl,
-          height: 60,
-          width: 60,
-        ),
+        leading: !widget.cartItem.item.imgUrl.contains('assets/images/')
+            ? Image.network(
+                widget.cartItem.item.imgUrl,
+                height: 60,
+                width: 60,
+              )
+            : Image.asset(
+                widget.cartItem.item.imgUrl,
+                height: 60,
+                width: 60,
+              ),
 
         //Title
         title: Text(
@@ -56,16 +60,7 @@ class _ItemCartTileState extends State<ItemCartTile> {
           suffixTextUnit: widget.cartItem.item.unit,
           value: widget.cartItem.quantity,
           isRemovable: true,
-          function: (quantity) {
-            setState(() {
-              widget.cartItem.quantity = quantity;
-
-              if (quantity == 0) {
-                //Remove item
-                widget.function(widget.cartItem);
-              }
-            });
-          },
+          function: (quantity) {},
         ),
       ),
     );
