@@ -48,7 +48,20 @@ class CartController extends GetxController {
 
     if (itemIndex >= 0) {
       //Item already exists
-      cartItems[itemIndex].quantity += quantity;
+      final product = cartItems[itemIndex];
+      final result = await modifyItemQuantity(
+        cartItem: product,
+        quantity: (product.quantity + quantity),
+      );
+
+      if (result) {
+        cartItems[itemIndex].quantity += quantity;
+      } else {
+        setErrorSnackbar(
+          'Modifying Error',
+          'Something went wrong while changing quantity',
+        );
+      }
     } else {
       //Doesnt exists
 
@@ -77,8 +90,20 @@ class CartController extends GetxController {
     update();
   }
 
+  Future<bool> modifyItemQuantity(
+      {required CartItemModel cartItem, required int quantity}) async {
+    final user = authController.mUser!;
+    final result = await cartRepository.modifyItemQuantity(
+      token: user.token.toString(),
+      cartItemId: cartItem.id,
+      quantity: quantity,
+    );
+
+    return result;
+  }
+
   int getItemIndex(ItemModel item) =>
-      cartItems.indexWhere((itemInList) => itemInList.id == item.id);
+      cartItems.indexWhere((itemInList) => itemInList.item.id == item.id);
 
   double cartTotalPrice() {
     double total = 0;

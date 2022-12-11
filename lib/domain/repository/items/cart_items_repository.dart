@@ -41,16 +41,17 @@ class CartItemsRepository {
     required int quantity,
   }) async {
     final result = await _httpManager.restRequest(
-        url: addItemToCartEndPoint,
-        method: HttpAbstractMethod.post,
-        body: {
-          'user': userId,
-          'quantity': quantity,
-          'productId': productId,
-        },
-        headers: {
-          'X-Parse-Session-Token': userToken,
-        });
+      url: addItemToCartEndPoint,
+      method: HttpAbstractMethod.post,
+      body: {
+        'user': userId,
+        'quantity': quantity,
+        'productId': productId,
+      },
+      headers: {
+        'X-Parse-Session-Token': userToken,
+      },
+    );
 
     if (result['result'] != null) {
       // Add Item
@@ -61,5 +62,25 @@ class CartItemsRepository {
         'Something went wrong adding the cart items',
       );
     }
+  }
+
+  Future<bool> modifyItemQuantity({
+    required String token,
+    required String cartItemId,
+    required int quantity,
+  }) async {
+    final result = await _httpManager.restRequest(
+      url: modifyItemOnCartEndPoint,
+      method: HttpAbstractMethod.post,
+      body: {
+        'cartItemId': cartItemId,
+        'quantity': quantity,
+      },
+      headers: {
+        'X-Parse-Session-Token': token,
+      },
+    );
+
+    return result.isEmpty;
   }
 }
