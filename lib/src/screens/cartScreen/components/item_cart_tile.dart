@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:newravelinestore/data/model/cart_item_model.dart';
 import 'package:newravelinestore/data/services/utils_services.dart';
+import 'package:newravelinestore/domain/controller/cart_controller.dart';
 import 'package:newravelinestore/src/components/quantity_custom_widget.dart';
 
 class ItemCartTile extends StatefulWidget {
@@ -16,6 +18,7 @@ class ItemCartTile extends StatefulWidget {
 }
 
 class _ItemCartTileState extends State<ItemCartTile> {
+  final cartController = Get.find<CartController>();
   @override
   Widget build(BuildContext context) {
     final utilService = UtilsService();
@@ -60,7 +63,12 @@ class _ItemCartTileState extends State<ItemCartTile> {
           suffixTextUnit: widget.cartItem.item.unit,
           value: widget.cartItem.quantity,
           isRemovable: true,
-          function: (quantity) {},
+          function: (quantity) {
+            cartController.modifyItemQuantity(
+              cartItem: widget.cartItem,
+              quantity: quantity,
+            );
+          },
         ),
       ),
     );

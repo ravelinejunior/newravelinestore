@@ -49,19 +49,10 @@ class CartController extends GetxController {
     if (itemIndex >= 0) {
       //Item already exists
       final product = cartItems[itemIndex];
-      final result = await modifyItemQuantity(
+      await modifyItemQuantity(
         cartItem: product,
         quantity: (product.quantity + quantity),
       );
-
-      if (result) {
-        cartItems[itemIndex].quantity += quantity;
-      } else {
-        setErrorSnackbar(
-          'Modifying Error',
-          'Something went wrong while changing quantity',
-        );
-      }
     } else {
       //Doesnt exists
 
@@ -98,6 +89,27 @@ class CartController extends GetxController {
       cartItemId: cartItem.id,
       quantity: quantity,
     );
+
+    if (result) {
+      if (quantity == 0) {
+        cartItems.removeWhere(
+          (item) => cartItem.id == item.id,
+        );
+      } else {
+        cartItems
+            .firstWhere(
+              (item) => cartItem.id == item.id,
+            )
+            .quantity = quantity;
+      }
+
+      update();
+    } else {
+      setErrorSnackbar(
+        'Modifying Error',
+        'Something went wrong while changing quantity',
+      );
+    }
 
     return result;
   }

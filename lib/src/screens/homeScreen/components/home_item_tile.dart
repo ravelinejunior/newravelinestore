@@ -41,8 +41,10 @@ class _HomeItemTileState extends State<HomeItemTile> {
           splashColor: Colors.teal.shade100,
           onTap: () {
             FocusManager.instance.primaryFocus?.unfocus();
-            Get.toNamed(ConstantsRoutes.detailRoute,
-                arguments: widget.itemModel);
+            Get.toNamed(
+              ConstantsRoutes.detailRoute,
+              arguments: widget.itemModel,
+            );
           },
           child: Card(
             elevation: 8,
