@@ -28,8 +28,10 @@ class NavigationController extends GetxController {
   void navigatePageView(int page) {
     if (_currentIndex.value == page) return;
 
-    _pageController.jumpToPage(page);
-    _currentIndex.value = page;
+    if (_pageController.hasClients) {
+      _pageController.jumpToPage(page);
+      _currentIndex.value = page;
+    } else {}
   }
 }
 

@@ -30,8 +30,6 @@ class CartController extends GetxController {
       success: (data) {
         cartItems = data;
         update();
-
-        debugPrint(cartItems.toString());
       },
       error: (message) {
         setErrorSnackbar(
@@ -126,4 +124,10 @@ class CartController extends GetxController {
 
     return total;
   }
+
+  int getCartTotalItems() => cartItems.isEmpty
+      ? 0
+      : cartItems.map((cartItem) => cartItem.quantity).reduce((a, b) => a + b);
+
+  int getCartTotalItem() => cartItems.isEmpty ? 0 : cartItems.length;
 }

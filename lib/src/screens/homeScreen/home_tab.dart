@@ -4,7 +4,9 @@ import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:newravelinestore/domain/controller/cart_controller.dart';
 import 'package:newravelinestore/domain/controller/home_controller.dart';
+import 'package:newravelinestore/domain/controller/navigation_controller.dart';
 import 'package:newravelinestore/src/components/custom_shimmer.dart';
 import 'package:newravelinestore/src/screens/homeScreen/components/home_item_tile.dart';
 import 'package:newravelinestore/src/utils/constants.dart';
@@ -22,6 +24,8 @@ class _HomeTabState extends State<HomeTab> {
   String selectectedCategory = 'Meats';
   GlobalKey<CartIconKey> gkCart = GlobalKey<CartIconKey>();
   late Function(GlobalKey) runAddToCardAnimation;
+
+  final navigationController = Get.find<NavigationController>();
 
   final TextEditingController _editingController = TextEditingController();
 
@@ -69,20 +73,29 @@ class _HomeTabState extends State<HomeTab> {
               top: 16,
               right: 16,
             ),
-            child: Badge(
-              badgeColor: Colors.red[700] ?? Colors.red,
-              badgeContent: Text(
-                '2',
-                style: GoogleFonts.montserrat(
-                  color: Colors.white,
-                  fontSize: 12,
-                ),
-              ),
-              child: AddToCartIcon(
-                key: gkCart,
-                icon: Icon(
-                  Icons.shopping_bag,
-                  color: Colors.teal[600],
+            child: InkWell(
+              splashColor: Colors.teal.withOpacity(0.7),
+              onTap: () {
+                navigationController
+                    .navigatePageView(AbstractNavigationTabs.cartTab);
+              },
+              child: GetBuilder<CartController>(
+                builder: (controller) => Badge(
+                  badgeColor: Colors.red[700] ?? Colors.red,
+                  badgeContent: Text(
+                    controller.getCartTotalItem().toString(),
+                    style: GoogleFonts.montserrat(
+                      color: Colors.white,
+                      fontSize: 12,
+                    ),
+                  ),
+                  child: AddToCartIcon(
+                    key: gkCart,
+                    icon: Icon(
+                      Icons.shopping_bag,
+                      color: Colors.teal[600],
+                    ),
+                  ),
                 ),
               ),
             ),
