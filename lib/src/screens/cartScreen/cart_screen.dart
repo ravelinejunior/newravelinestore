@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 import 'package:newravelinestore/data/services/utils_services.dart';
 import 'package:newravelinestore/domain/controller/cart_controller.dart';
 import 'package:newravelinestore/src/utils/constants.dart';
@@ -28,22 +29,36 @@ class _CartTabState extends State<CartTab> {
         children: [
           Expanded(
             child: GetBuilder<CartController>(
-              builder: (controller) => ListView.separated(
-                itemBuilder: (_, index) {
-                  final itemCart = controller.cartItems[index];
-                  return ItemCartTile(
-                    cartItem: itemCart,
-                  );
-                },
-                separatorBuilder: (_, __) {
-                  return const Divider(
-                    indent: 4,
-                    endIndent: 4,
-                    color: Colors.grey,
-                  );
-                },
-                itemCount: controller.cartItems.length,
-              ),
+              builder: (controller) => controller.cartItems.isNotEmpty
+                  ? ListView.separated(
+                      itemBuilder: (_, index) {
+                        final itemCart = controller.cartItems[index];
+                        return ItemCartTile(
+                          cartItem: itemCart,
+                        );
+                      },
+                      separatorBuilder: (_, __) {
+                        return const Divider(
+                          indent: 4,
+                          endIndent: 4,
+                          color: Colors.grey,
+                        );
+                      },
+                      itemCount: controller.cartItems.length,
+                    )
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height / 2,
+                          child: LottieBuilder.asset(
+                            'assets/json/empty_list.json',
+                          ),
+                        ),
+                      ],
+                    ),
             ),
           ),
           const SizedBox(height: 16),
@@ -157,14 +172,20 @@ class _CartTabState extends State<CartTab> {
               shadowColor: Colors.greenAccent,
               minimumSize: const Size(50, 50),
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
-                  side: const BorderSide(
-                      color: Colors.teal, style: BorderStyle.solid, width: 1)),
+                borderRadius: BorderRadius.circular(16),
+                side: const BorderSide(
+                  color: Colors.teal,
+                  style: BorderStyle.solid,
+                  width: 1,
+                ),
+              ),
             ),
             onPressed: () => Navigator.of(context).pop(true),
             child: Text(
               'Yes',
-              style: GoogleFonts.montserrat(color: Colors.teal[700]),
+              style: GoogleFonts.montserrat(
+                color: Colors.teal[700],
+              ),
             ),
           ),
         ],

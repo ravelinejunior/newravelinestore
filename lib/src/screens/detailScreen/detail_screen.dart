@@ -38,10 +38,6 @@ class _DetailScreenState extends State<DetailScreen> {
         leading: InkWell(
           splashColor: Colors.teal.shade100,
           onTap: () {
-            cartController.addItemToCart(
-              item: item,
-              quantity: quantitySelected,
-            );
             Get.back();
           },
           child: const Icon(
@@ -134,7 +130,13 @@ class _DetailScreenState extends State<DetailScreen> {
                           borderRadius: BorderRadius.circular(16),
                         ),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        cartController.addItemToCart(
+                          item: item,
+                          quantity: quantitySelected,
+                        );
+                        Get.back();
+                      },
                       icon: const Icon(
                         Icons.shopping_cart_rounded,
                         color: Colors.white,
@@ -142,9 +144,10 @@ class _DetailScreenState extends State<DetailScreen> {
                       label: Text(
                         addToCartString,
                         style: GoogleFonts.montserrat(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                            color: Colors.white),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   )
