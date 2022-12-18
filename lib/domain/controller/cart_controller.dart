@@ -5,6 +5,7 @@ import 'package:newravelinestore/data/model/item_model.dart';
 import 'package:newravelinestore/domain/controller/auth_controller.dart';
 import 'package:newravelinestore/domain/repository/items/cart_items_repository.dart';
 import 'package:newravelinestore/domain/result/items/cart_items_result.dart';
+import 'package:newravelinestore/src/components/payment_dialog.dart';
 import 'package:newravelinestore/src/components/snackbar_ext.dart';
 
 class CartController extends GetxController {
@@ -110,6 +111,27 @@ class CartController extends GetxController {
     }
 
     return result;
+  }
+
+  Future checkoutCart() async {
+    final result = await cartRepository.checkoutCart(
+      token: authController.mUser!.token!,
+      total: cartTotalPrice(),
+    );
+
+    result.when(
+      success: (order) {
+        showDialog(
+          context: Get.context!,
+          builder: (_) => PaymentDialog(
+            order: order,
+          ),
+        );
+      },
+      error: (message) {
+        setErrorSnackbar('Order Error', message);
+      },
+    );
   }
 
   int getItemIndex(ItemModel item) =>

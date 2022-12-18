@@ -30,6 +30,7 @@ const String getProductsEndPoint = "$baseUrlEndPoint/get-product-list";
 const String getCartItemsEndPoint = "$baseUrlEndPoint/get-cart-items";
 const String addItemToCartEndPoint = "$baseUrlEndPoint/add-item-to-cart";
 const String modifyItemOnCartEndPoint = "$baseUrlEndPoint/modify-item-quantity";
+const String checkoutEndPoint = "$baseUrlEndPoint/checkout";
 
 //Tokens
 const String tokenDataKey = 'token_key';

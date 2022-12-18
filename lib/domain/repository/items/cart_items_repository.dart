@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:newravelinestore/data/model/cart_item_model.dart';
+import 'package:newravelinestore/data/model/order_model.dart';
 import 'package:newravelinestore/data/services/http_manager.dart';
 import 'package:newravelinestore/domain/result/items/cart_items_result.dart';
 import 'package:newravelinestore/src/utils/constants.dart';
@@ -82,5 +83,30 @@ class CartItemsRepository {
     );
 
     return result.isEmpty;
+  }
+
+  Future<CartItemsResult<OrderModel>> checkoutCart({
+    required String token,
+    required double total,
+  }) async {
+    final result = await _httpManager.restRequest(
+      url: checkoutEndPoint,
+      method: HttpAbstractMethod.post,
+      headers: {
+        'X-Parse-Session-Token': token,
+      },
+      body: {
+        'total': total,
+      },
+    );
+
+    if (result['result'] != null) {
+      final order = OrderModel.fromJson(result['result']);
+      return CartItemsResult.success(order);
+    } else {
+      return CartItemsResult.error(
+        'It was not possible finish the order. Try again',
+      );
+    }
   }
 }

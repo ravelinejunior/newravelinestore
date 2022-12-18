@@ -1,16 +1,30 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
 
+import 'package:json_annotation/json_annotation.dart';
 import 'package:newravelinestore/data/model/cart_item_model.dart';
 
+import 'dart:convert';
+part 'order_model.g.dart';
+
+@JsonSerializable()
 class OrderModel {
   int id;
-  DateTime dateCreated;
+
+  DateTime? dateCreated;
+
+  @JsonKey(name: 'due')
   DateTime dateOverdue;
+
+  @JsonKey(defaultValue: [])
   List<CartItemModel> items;
+
   String status;
+
+  @JsonKey(name: 'copiaecola')
   String copyAndPaste;
+
   double total;
+  String qrCodeImage;
   OrderModel({
     required this.id,
     required this.dateCreated,
@@ -19,18 +33,15 @@ class OrderModel {
     required this.status,
     required this.copyAndPaste,
     required this.total,
+    required this.qrCodeImage,
   });
 
   Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'id': id,
-      'dateCreated': dateCreated.millisecondsSinceEpoch,
-      'dateOverdue': dateOverdue.millisecondsSinceEpoch,
-      'items': items.map((x) => x.toJson()).toList(),
-      'status': status,
-      'copyAndPaste': copyAndPaste,
-      'total': total,
-    };
+    return _$OrderModelToJson(this);
+  }
+
+  factory OrderModel.fromJson(Map<String, dynamic> map) {
+    return _$OrderModelFromJson(map);
   }
 
   String toJson() => json.encode(toMap());

@@ -29,7 +29,7 @@ class OrdersTile extends StatelessWidget {
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
               Text(
-                utilsService.formatDateTime(order.dateCreated),
+                utilsService.formatDateTime(order.dateCreated!),
                 style: GoogleFonts.montserrat(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
