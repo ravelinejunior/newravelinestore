@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:newravelinestore/domain/controller/auth_controller.dart';
-import 'package:newravelinestore/domain/controller/navigation_controller.dart';
 import 'package:newravelinestore/domain/controller/user_controller.dart';
 import 'package:newravelinestore/src/utils/routes.dart';
 
@@ -10,7 +9,6 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   Get.put(UserController());
   Get.put(AuthController());
-  Get.put(NavigationController());
   runApp(const MyApp());
 }
 

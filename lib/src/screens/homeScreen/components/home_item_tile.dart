@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:newravelinestore/data/model/item_model.dart';
 import 'package:newravelinestore/data/services/utils_services.dart';
+import 'package:newravelinestore/domain/controller/cart_controller.dart';
 import 'package:newravelinestore/src/utils/routes.dart';
 
 class HomeItemTile extends StatefulWidget {
@@ -25,6 +26,7 @@ class _HomeItemTileState extends State<HomeItemTile> {
   final GlobalKey imageGlobalKey = GlobalKey();
 
   IconData iconTile = Icons.add_shopping_cart_rounded;
+  final cartController = Get.find<CartController>();
 
   Future<void> switchIcons() async {
     setState(() => iconTile = Icons.check);
@@ -121,6 +123,7 @@ class _HomeItemTileState extends State<HomeItemTile> {
               child: InkWell(
                 splashColor: Colors.teal.shade100,
                 onTap: () {
+                  cartController.addItemToCart(item: widget.itemModel);
                   widget.cartAnimationMethod(imageGlobalKey);
                   switchIcons();
                 },

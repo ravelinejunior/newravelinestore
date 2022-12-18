@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:newravelinestore/domain/controller/navigation_controller.dart';
 import 'package:newravelinestore/src/screens/cartScreen/cart_screen.dart';
 import 'package:newravelinestore/src/screens/homeScreen/home_tab.dart';
 import 'package:newravelinestore/src/screens/ordersScreen/orders_screen.dart';
@@ -13,13 +15,12 @@ class BaseScreen extends StatefulWidget {
 }
 
 class _BaseScreenState extends State<BaseScreen> {
-  int currentIndex = 0;
-  final pageController = PageController();
+  final navigationController = NavigationController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageView(
-        controller: pageController,
+        controller: navigationController.pageController,
         physics: const NeverScrollableScrollPhysics(),
         children: [
           const HomeTab(),
@@ -28,47 +29,42 @@ class _BaseScreenState extends State<BaseScreen> {
           ProfileScreen(),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        elevation: 0,
-        type: BottomNavigationBarType.fixed,
-        selectedFontSize: 14,
-        enableFeedback: true,
-        selectedItemColor: Colors.white,
-        unselectedItemColor: Colors.grey[400],
-        backgroundColor: Colors.teal[600],
-        currentIndex: currentIndex,
-        onTap: (index) {
-          setState(() {
-            currentIndex = index;
-            pageController.animateToPage(
-              currentIndex,
-              duration: const Duration(milliseconds: 500),
-              curve: Curves.easeInOut,
-            );
-          });
-        },
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_filled),
-            label: bottomNavHomeString,
-            tooltip: bottomNavHomeString,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart),
-            label: bottomNavCartString,
-            tooltip: bottomNavCartString,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.list_alt_outlined),
-            label: bottomNavOrdersString,
-            tooltip: bottomNavOrdersString,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: bottomNavProfileString,
-            tooltip: bottomNavProfileString,
-          ),
-        ],
+      bottomNavigationBar: Obx(
+        () => BottomNavigationBar(
+          elevation: 0,
+          type: BottomNavigationBarType.fixed,
+          selectedFontSize: 14,
+          enableFeedback: true,
+          selectedItemColor: Colors.white,
+          unselectedItemColor: Colors.grey[400],
+          backgroundColor: Colors.teal[600],
+          currentIndex: navigationController.currentIndex,
+          onTap: (index) {
+            navigationController.navigatePageView(index);
+          },
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home_filled),
+              label: bottomNavHomeString,
+              tooltip: bottomNavHomeString,
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.shopping_cart),
+              label: bottomNavCartString,
+              tooltip: bottomNavCartString,
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.list_alt_outlined),
+              label: bottomNavOrdersString,
+              tooltip: bottomNavOrdersString,
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: bottomNavProfileString,
+              tooltip: bottomNavProfileString,
+            ),
+          ],
+        ),
       ),
     );
   }

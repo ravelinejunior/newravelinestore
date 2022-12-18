@@ -2,36 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class NavigationController extends GetxController {
-  late PageController _pageController;
-  late RxInt _currentIndex;
+  final PageController _pageController = PageController(
+    initialPage: AbstractNavigationTabs.homeTab,
+  );
+  final RxInt _currentIndex = AbstractNavigationTabs.homeTab.obs;
 
-  @override
-  void onInit() {
-    super.onInit();
-
-    initNavigation(
-      pageController: PageController(
-        initialPage: AbstractNavigationTabs.homeTab,
-      ),
-      currentIndex: AbstractNavigationTabs.homeTab,
-    );
-  }
-
-  void initNavigation({
-    required PageController pageController,
-    required int currentIndex,
-  }) {
-    _pageController = pageController;
-    _currentIndex = currentIndex.obs;
-  }
+  PageController get pageController => _pageController;
+  int get currentIndex => _currentIndex.value;
 
   void navigatePageView(int page) {
     if (_currentIndex.value == page) return;
 
-    if (_pageController.hasClients) {
-      _pageController.jumpToPage(page);
-      _currentIndex.value = page;
-    } else {}
+    _pageController.animateToPage(
+      page = page,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+    );
+    _currentIndex.value = page;
   }
 }
 
