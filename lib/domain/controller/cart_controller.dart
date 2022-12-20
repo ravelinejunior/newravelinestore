@@ -12,6 +12,8 @@ class CartController extends GetxController {
   final cartRepository = CartItemsRepository();
   final authController = Get.find<AuthController>();
 
+  RxBool isLoading = false.obs;
+
   List<CartItemModel> cartItems = [];
 
   @override
@@ -114,6 +116,8 @@ class CartController extends GetxController {
   }
 
   Future checkoutCart() async {
+    setCheckoutLoading();
+
     final result = await cartRepository.checkoutCart(
       token: authController.mUser!.token!,
       total: cartTotalPrice(),
@@ -121,6 +125,10 @@ class CartController extends GetxController {
 
     result.when(
       success: (order) {
+        //clean cart
+        cartItems.clear();
+        update();
+
         showDialog(
           context: Get.context!,
           builder: (_) => PaymentDialog(
@@ -132,6 +140,8 @@ class CartController extends GetxController {
         setErrorSnackbar('Order Error', message);
       },
     );
+
+    setCheckoutLoading();
   }
 
   int getItemIndex(ItemModel item) =>
@@ -152,4 +162,9 @@ class CartController extends GetxController {
       : cartItems.map((cartItem) => cartItem.quantity).reduce((a, b) => a + b);
 
   int getCartTotalItem() => cartItems.isEmpty ? 0 : cartItems.length;
+
+  void setCheckoutLoading() {
+    isLoading.value = !isLoading.value;
+    update();
+  }
 }

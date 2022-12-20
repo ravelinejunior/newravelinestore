@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
@@ -35,5 +38,10 @@ class UtilsService {
   //Remove Storaged Local Data
   Future<void> removeLocalData({required String key}) async {
     return await storage.delete(key: key);
+  }
+
+  Uint8List decodeQrCodeImage(String value) {
+    String base64String = value.split(',').last;
+    return base64.decode(base64String);
   }
 }

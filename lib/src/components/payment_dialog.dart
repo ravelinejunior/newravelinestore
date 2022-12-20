@@ -1,10 +1,10 @@
+import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:newravelinestore/data/model/order_model.dart';
 import 'package:newravelinestore/data/services/utils_services.dart';
 import 'package:newravelinestore/src/components/snackbar_ext.dart';
-import 'package:qr_flutter/qr_flutter.dart';
 
 class PaymentDialog extends StatelessWidget {
   PaymentDialog({Key? key, required this.order}) : super(key: key);
@@ -34,10 +34,10 @@ class PaymentDialog extends StatelessWidget {
             ),
             //Pix Qr Code
             //#TODO Change this line
-            QrImage(
-              data: 'Te amo baixinha maluca 29/12/1995',
-              version: QrVersions.auto,
-              size: MediaQuery.of(context).size.height / 3,
+            Image.memory(
+              utilsService.decodeQrCodeImage(order.qrCodeImage),
+              height: MediaQuery.of(context).size.height / 3,
+              width: MediaQuery.of(context).size.width / 3,
             ),
             //Outdate
             Text(
@@ -70,10 +70,12 @@ class PaymentDialog extends StatelessWidget {
                     color: Colors.green,
                   ),
                 ),
-                onPressed: () {
-                  setGeneralMessage(
-                    "Pix Code Copied",
-                    messageSentence: order.copyAndPaste,
+                onPressed: () async {
+                  await FlutterClipboard.copy(order.copyAndPaste).then(
+                    (_) => setGeneralMessage(
+                      "Pix Code Copied",
+                      messageSentence: order.copyAndPaste,
+                    ),
                   );
                 },
                 icon: const Icon(Icons.copy, size: 16),

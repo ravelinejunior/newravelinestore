@@ -4,7 +4,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:newravelinestore/data/services/utils_services.dart';
 import 'package:newravelinestore/domain/controller/cart_controller.dart';
-import 'package:newravelinestore/src/components/payment_dialog.dart';
 import 'package:newravelinestore/src/utils/constants.dart';
 
 import 'components/item_cart_tile.dart';
@@ -66,7 +65,7 @@ class _CartTabState extends State<CartTab> {
           const SizedBox(height: 16),
           Container(
             padding: const EdgeInsets.all(16),
-            height: MediaQuery.of(context).size.height / 5,
+            height: MediaQuery.of(context).size.height / 4,
             decoration: const BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
@@ -103,32 +102,50 @@ class _CartTabState extends State<CartTab> {
                     );
                   }),
                   const SizedBox(height: 4),
-                  ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.teal,
-                      shadowColor: Colors.greenAccent,
-                      minimumSize: const Size(50, 50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                    ),
-                    onPressed: () async {
-                      bool? result = await showOrderConfirmation();
-                      await _cartController.checkoutCart();
-                      if (result ?? false) {}
+                  GetBuilder<CartController>(
+                    builder: (controller) {
+                      return !controller.isLoading.value
+                          ? ElevatedButton.icon(
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.teal,
+                                shadowColor: Colors.greenAccent,
+                                minimumSize: const Size(50, 50),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                              ),
+                              onPressed: () async {
+                                bool? result = await showOrderConfirmation();
+
+                                if (result ?? false) {
+                                  await _cartController.checkoutCart();
+                                }
+                              },
+                              icon: const Icon(
+                                Icons.shopping_cart_rounded,
+                                color: Colors.white,
+                              ),
+                              label: Text(
+                                finishOrderString,
+                                style: GoogleFonts.montserrat(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            )
+                          : const Center(
+                              child: Padding(
+                                padding: EdgeInsets.all(16),
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 4,
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    Colors.teal,
+                                  ),
+                                ),
+                              ),
+                            );
                     },
-                    icon: const Icon(
-                      Icons.shopping_cart_rounded,
-                      color: Colors.white,
-                    ),
-                    label: Text(
-                      finishOrderString,
-                      style: GoogleFonts.montserrat(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                        color: Colors.white,
-                      ),
-                    ),
                   ),
                 ],
               ),
