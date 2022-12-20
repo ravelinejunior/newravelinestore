@@ -4,6 +4,7 @@ import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import 'package:newravelinestore/domain/binding/home_binding.dart';
 import 'package:newravelinestore/domain/binding/item_cart_binding.dart';
 import 'package:newravelinestore/domain/binding/navigation_binding.dart';
+import 'package:newravelinestore/domain/binding/orders_binding.dart';
 import 'package:newravelinestore/src/screens/baseScreen/base_screen.dart';
 import 'package:newravelinestore/src/screens/detailScreen/detail_screen.dart';
 import 'package:newravelinestore/src/screens/loginScreen/login_screen.dart';
@@ -35,6 +36,7 @@ class Routes {
       curve: Curves.linear,
       bindings: [
         HomeBinding(),
+        OrdersBinding(),
         CartBinding(),
         NavigationBinding(),
       ],
