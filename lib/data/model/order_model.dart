@@ -9,7 +9,7 @@ part 'order_model.g.dart';
 
 @JsonSerializable()
 class OrderModel {
-  int id;
+  String id;
 
   @JsonKey(name: 'createdAt')
   DateTime? dateCreated;
