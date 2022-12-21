@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:newravelinestore/data/model/cart_item_model.dart';
 import 'package:newravelinestore/data/model/order_model.dart';
 import 'package:newravelinestore/domain/controller/auth_controller.dart';
 import 'package:newravelinestore/domain/repository/orders/orders_repository.dart';
@@ -7,6 +8,7 @@ import 'package:newravelinestore/src/components/snackbar_ext.dart';
 
 class OrdersController extends GetxController {
   List<OrderModel> allOrders = [];
+  List<CartItemModel> allItems = [];
   final _authController = Get.find<AuthController>();
   final _ordersRepository = OrdersRepository();
 

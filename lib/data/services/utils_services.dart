@@ -19,7 +19,7 @@ class UtilsService {
     initializeDateFormatting();
 
     final DateFormat dateFormat = DateFormat.yMd('pt_BR').add_Hm();
-    return dateFormat.format(dateTime);
+    return dateFormat.format(dateTime.toLocal());
   }
 
   //Storage Local Data

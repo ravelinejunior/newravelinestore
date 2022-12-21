@@ -71,11 +71,16 @@ class PaymentDialog extends StatelessWidget {
                   ),
                 ),
                 onPressed: () async {
-                  await FlutterClipboard.copy(order.copyAndPaste).then(
-                    (_) => setGeneralMessage(
-                      "Pix Code Copied",
-                      messageSentence: order.copyAndPaste,
-                    ),
+                  await FlutterClipboard.copy(order.copyAndPaste);
+
+                  await setGeneralMessage(
+                    "Pix Code Copied",
+                    messageSentence: order.copyAndPaste,
+                  ).then(
+                    (__) async {
+                      await Future.delayed(const Duration(milliseconds: 1500));
+                      Navigator.of(context).pop();
+                    },
                   );
                 },
                 icon: const Icon(Icons.copy, size: 16),
@@ -106,7 +111,7 @@ class PaymentDialog extends StatelessWidget {
                 },
                 icon: const Icon(Icons.copy, size: 16, color: Colors.white),
                 label: const Text(
-                  'Cancel',
+                  'Close',
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,

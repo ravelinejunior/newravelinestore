@@ -25,6 +25,8 @@ class OrderModel {
   @JsonKey(name: 'copiaecola')
   String copyAndPaste;
 
+  bool get isOverDue => dateOverdue.isBefore(DateTime.now().toLocal());
+
   double total;
   String qrCodeImage;
   OrderModel({
