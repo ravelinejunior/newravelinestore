@@ -33,6 +33,7 @@ const String modifyItemOnCartEndPoint = "$baseUrlEndPoint/modify-item-quantity";
 const String checkoutEndPoint = "$baseUrlEndPoint/checkout";
 const String getOrdersEndPoint = "$baseUrlEndPoint/get-orders";
 const String getOrdersItemsEndPoint = "$baseUrlEndPoint/get-orders-items";
+const String changePasswordEndPoint = "$baseUrlEndPoint/change-password";
 
 //Tokens
 const String tokenDataKey = 'token_key';

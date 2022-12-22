@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:newravelinestore/data/model/user_model.dart';
 import 'package:newravelinestore/data/services/http_manager.dart';
 import 'package:newravelinestore/domain/repository/auth/auth_errors.dart';
@@ -49,13 +47,33 @@ class AuthRepository {
     );
   }
 
+  Future<bool> changePassword({
+    required String email,
+    required String currentPassword,
+    required String newPassword,
+    required String token,
+  }) async {
+    final result = await _httpManager.restRequest(
+      url: changePasswordEndPoint,
+      method: HttpAbstractMethod.post,
+      headers: {
+        'X-Parse-Session-Token': token,
+      },
+      body: {
+        'email': email,
+        'currentPassword': currentPassword,
+        'newPassword': newPassword,
+      },
+    );
+
+    return result['error'] == null;
+  }
+
   AuthResult handleUserOrError(Map<dynamic, dynamic> response) {
     if (response['result'] != null) {
-      log('Login successfully authenticated');
       final user = UserModel.fromJson(response['result']);
       return AuthResult.success(user);
     } else {
-      log('Login fail');
       return AuthResult.error(
         authErrorsString(
           response['error'],

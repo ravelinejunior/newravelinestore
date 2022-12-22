@@ -13,6 +13,10 @@ class AuthController extends GetxController {
   RxBool isLoading = false.obs;
   RxBool isAuthenticated = false.obs;
 
+  String currentPass = "";
+  String newPass = "";
+  String newPassConfirm = "";
+
   void setLoadingState() {
     isLoading.update((loading) {
       isLoading.value = !loading!;
@@ -109,11 +113,44 @@ class AuthController extends GetxController {
     await _authRepository.resetPassword(email).then((_) => setLoadingState());
   }
 
+  Future<void> changePassword({
+    required String currentPassword,
+    required String newPassword,
+  }) async {
+    setLoadingState();
+
+    final user = mUser!;
+    final result = await _authRepository.changePassword(
+      email: user.email!,
+      currentPassword: currentPassword,
+      newPassword: newPassword,
+      token: user.token!,
+    );
+
+    setLoadingState();
+
+    if (result) {
+      //Success
+      await setGeneralMessage('Password updated successfully');
+      signOut();
+    } else {
+      await setErrorSnackbar(
+          'Change Password', 'Current password is incorrect');
+    }
+  }
+
   void saveTokenFromAuth() {
     //Save Data
     utilsService.saveLocalData(key: tokenDataKey, data: mUser!.token!);
     isAuthenticated.value = true;
     Get.offAllNamed(ConstantsRoutes.baseRoute);
     log('User authenticated is ${mUser.toString()}');
+  }
+
+  bool verifyFields() {
+    return currentPass.isNotEmpty &&
+        newPass.isNotEmpty &&
+        newPassConfirm.isNotEmpty &&
+        (newPass == newPassConfirm);
   }
 }
