@@ -4,6 +4,7 @@ import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 import 'package:newravelinestore/domain/controller/cart_controller.dart';
 import 'package:newravelinestore/domain/controller/home_controller.dart';
 import 'package:newravelinestore/domain/controller/navigation_controller.dart';
@@ -243,23 +244,12 @@ class _HomeTabState extends State<HomeTab> {
                         ),
                         replacement: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Icon(
-                                Icons.search_off,
-                                size: 60,
-                                color: Colors.teal,
-                              ),
-                              Text(
-                                'There is no items to show!!!',
-                                style: GoogleFonts.lato(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              )
-                            ],
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.height / 2.6,
+                            child: LottieBuilder.asset(
+                              'assets/json/empty_list.json',
+                            ),
                           ),
                         ),
                       )

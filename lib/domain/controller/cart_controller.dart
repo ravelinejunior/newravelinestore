@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:newravelinestore/data/model/cart_item_model.dart';
 import 'package:newravelinestore/data/model/item_model.dart';
 import 'package:newravelinestore/domain/controller/auth_controller.dart';
+import 'package:newravelinestore/domain/controller/orders_controller.dart';
 import 'package:newravelinestore/domain/repository/items/cart_items_repository.dart';
 import 'package:newravelinestore/domain/result/items/cart_items_result.dart';
 import 'package:newravelinestore/src/components/payment_dialog.dart';
@@ -11,6 +12,7 @@ import 'package:newravelinestore/src/components/snackbar_ext.dart';
 class CartController extends GetxController {
   final cartRepository = CartItemsRepository();
   final authController = Get.find<AuthController>();
+  final _orderController = Get.find<OrdersController>();
 
   RxBool isLoading = false.obs;
 
@@ -124,17 +126,19 @@ class CartController extends GetxController {
     );
 
     result.when(
-      success: (order) {
+      success: (order) async {
         //clean cart
         cartItems.clear();
         update();
 
-        showDialog(
+        await showDialog(
           context: Get.context!,
           builder: (_) => PaymentDialog(
             order: order,
           ),
-        );
+        ).then((__) async {
+          await _orderController.getAllOrders();
+        });
       },
       error: (message) {
         setErrorSnackbar('Order Error', message);

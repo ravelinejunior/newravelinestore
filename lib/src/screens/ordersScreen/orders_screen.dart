@@ -14,15 +14,23 @@ class OrdersScreen extends StatelessWidget {
         centerTitle: true,
       ),
       body: GetBuilder<OrdersController>(builder: (controller) {
-        return ListView.separated(
-          padding: const EdgeInsets.all(16),
-          physics: const BouncingScrollPhysics(),
-          itemBuilder: (_, index) {
-            final order = controller.allOrders[index];
-            return OrdersTile(order: order);
-          },
-          separatorBuilder: (_, __) => const SizedBox(height: 8),
-          itemCount: controller.allOrders.length,
+        return RefreshIndicator(
+          onRefresh: controller.getAllOrders,
+          displacement: 13,
+          triggerMode: RefreshIndicatorTriggerMode.onEdge,
+          edgeOffset: 14.6,
+          color: Colors.teal,
+          strokeWidth: 3,
+          child: ListView.separated(
+            padding: const EdgeInsets.all(16),
+            physics: const AlwaysScrollableScrollPhysics(),
+            itemBuilder: (_, index) {
+              final order = controller.allOrders[index];
+              return OrdersTile(order: order);
+            },
+            separatorBuilder: (_, __) => const SizedBox(height: 8),
+            itemCount: controller.allOrders.length,
+          ),
         );
       }),
     );

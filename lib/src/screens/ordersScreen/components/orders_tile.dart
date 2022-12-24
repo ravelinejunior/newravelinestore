@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:newravelinestore/data/model/cart_item_model.dart';
 import 'package:newravelinestore/data/model/order_model.dart';
 import 'package:newravelinestore/data/services/utils_services.dart';
-import 'package:newravelinestore/domain/controller/orders_controller%20copy.dart';
+import 'package:newravelinestore/domain/controller/items_controller.dart';
 import 'package:newravelinestore/src/components/payment_dialog.dart';
 import 'package:newravelinestore/src/screens/ordersScreen/components/order_status.dart';
 
@@ -26,7 +26,10 @@ class OrdersTile extends StatelessWidget {
             global: false,
             builder: (controller) {
               return ExpansionTile(
-                // initiallyExpanded: order.status == 'pending_payment',
+                initiallyExpanded: order.dateCreated!
+                    .add(const Duration(minutes: 30))
+                    .toLocal()
+                    .isAfter(DateTime.now().toLocal()),
                 onExpansionChanged: (value) {
                   if (value && order.items.isNotEmpty) {
                     controller.getAllItems();
